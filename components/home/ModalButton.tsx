@@ -94,7 +94,7 @@ export function CheckboxReactHookFormMultiple({ setOpen }: args) {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setOpen(false);
-    toast("Фильтры успешно сохранены 💾");
+    toast("Фильтры успешно сохранены 💾", { duration: 1500 });
     dispatch(updateFilters(data.items));
   }
 

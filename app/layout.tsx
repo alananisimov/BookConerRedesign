@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Книги - это эмоции, новые ощущения, знания и конечно же удовольствие",
   metadataBase: new URL("http://localhost:3000"),
-  icons: "/logo.png",
+  icons: "/book.jpg",
 };
 export const viewport: Viewport = {
   themeColor: "#FFF",

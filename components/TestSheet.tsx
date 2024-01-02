@@ -70,7 +70,7 @@ export default function CartSheet({ open, setOpen, className }: props) {
                       <p className="text-right">Будет расчитана позже</p>
                     </div>
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                      <p>Total</p>
+                      <p>Всего</p>
                       <p className="text-right text-base text-black dark:text-white">
                         {totalAmount}
                         <span className="ml-1 inline">RUB</span>
@@ -156,7 +156,7 @@ export default function CartSheet({ open, setOpen, className }: props) {
                           <p className="text-right">Будет расчитана позже</p>
                         </div>
                         <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                          <p>Total</p>
+                          <p>Всего</p>
                           <p className="text-right text-base text-black dark:text-white">
                             {totalAmount}
                             <span className="ml-1 inline">RUB</span>
