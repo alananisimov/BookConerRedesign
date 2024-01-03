@@ -1,5 +1,5 @@
 // store.ts
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -13,6 +13,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import rootReducer from "./rootReducer";
 import filterSlice from "./filterSlice";
+import uiSlice from "./uiSlice";
 
 const persistConfig = {
   key: "root",
@@ -20,7 +21,6 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

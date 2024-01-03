@@ -10,14 +10,14 @@ import { ShoppingCart } from "lucide-react";
 import { Button } from "shadcn/components/ui/button";
 import TestSheet, { CartSheetWrapper } from "../TestSheet";
 import { useState } from "react";
+import CartButtonWrapper from "./CartButtonWrapper";
 
 export default function NavBar({ session }: { session: Session | null }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const scrolled = useScroll(50);
-  const [open, setOpen] = useState(false);
+
   return (
     <>
-      <CartSheetWrapper open={open} setOpen={setOpen} className={""} />
       <SignInModal />
       <div
         className={`fixed top-0 w-full flex justify-center ${
@@ -41,14 +41,7 @@ export default function NavBar({ session }: { session: Session | null }) {
             <p>Книжный уголок</p>
           </Link>
           <div className="inline-flex ml-auto space-x-3">
-            <div className="">
-              <Button
-                className="pl-4 py-0 px-1 h-[36px] focus:outline-none focus:border-0 transition-all ease-in-out hover:scale-110"
-                onClick={() => setOpen(true)}
-              >
-                <ShoppingCart />
-              </Button>
-            </div>
+            <CartButtonWrapper />
             <div className="">
               {session ? (
                 <UserDropdown session={session} />

@@ -34,14 +34,14 @@ export default function TestSheetContent({ cartItems }: args) {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   aria-hidden="true"
                   className="hover:text-accent-3 mx-[1px] h-4 w-4 text-black"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M6 18L18 6M6 6l12 12"
                   ></path>
                 </svg>
@@ -86,14 +86,14 @@ export default function TestSheetContent({ cartItems }: args) {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     aria-hidden="true"
                     className="h-4 w-4 dark:text-neutral-500"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M19.5 12h-15"
                     ></path>
                   </svg>
@@ -121,14 +121,14 @@ export default function TestSheetContent({ cartItems }: args) {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     aria-hidden="true"
                     className="h-4 w-4 dark:text-neutral-500"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 4.5v15m7.5-7.5h-15"
                     ></path>
                   </svg>

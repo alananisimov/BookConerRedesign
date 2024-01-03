@@ -51,6 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Book          Book[]
+  reviews       Review[]
 }
 
 model VerificationToken {
@@ -62,8 +63,8 @@ model VerificationToken {
 }
 
 model Book {
-  user        User    @relation(fields: [userEmail], references: [email])
-  id          Int     @id @default(autoincrement())
+  user        User     @relation(fields: [userEmail], references: [email])
+  id          Int      @id @default(autoincrement())
   title       String
   price       Int
   description String
@@ -73,4 +74,15 @@ model Book {
   count       Int
   userEmail   String
   genre       String   @default("")
+  reviews     Review[]
+}
+
+model Review {
+  id      Int    @id @default(autoincrement())
+  content String
+  rating  Int
+  bookId  Int
+  book    Book   @relation(fields: [bookId], references: [id])
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
 }
