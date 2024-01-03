@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { ApiError, Review } from "@/app/models";
+import { User } from "@prisma/client";
 export interface ReviewResponse {
   reviews:
     | {
@@ -8,7 +9,7 @@ export interface ReviewResponse {
         content: string;
         rating: number;
         bookId: number;
-        userId: string;
+        user: User;
       }[]
     | [];
   totalCount: number;
@@ -25,6 +26,9 @@ export default async function handler(
   }
   if (typeof bookId === "string") {
     const reviews = await prisma.review.findMany({
+      include: {
+        user: true,
+      },
       where: { bookId: parseInt(bookId, 10) },
     });
     const totalCount = reviews.length;

@@ -9,13 +9,12 @@ import { Session } from "next-auth";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "shadcn/components/ui/button";
 import TestSheet, { CartSheetWrapper } from "../TestSheet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartButtonWrapper from "./CartButtonWrapper";
 
 export default function NavBar({ session }: { session: Session | null }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const scrolled = useScroll(50);
-
   return (
     <>
       <SignInModal />

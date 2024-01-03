@@ -4,8 +4,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["lh3.googleusercontent.com", "vercel.com", "i.ibb.co", "tailwindui.com"],
+   
+      dangerouslyAllowSVG: true,
+      contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    domains: ["lh3.googleusercontent.com", "vercel.com", "i.ibb.co", "tailwindui.com", "api.dicebear.com"],
   },
+ 
   async redirects() {
     return [
       {

@@ -242,10 +242,8 @@ export default function BookView({ product }: props) {
               </div>
             </div>
           </div>
-          <div className="px-6 lg:max-w-5xl mx-auto w-full">
-            <ReviewBlock
-              reviews={reviews_data?.reviews ? reviews_data?.reviews : []}
-            />
+          <div className=" lg:max-w-5xl mx-auto w-full">
+            <ReviewBlock reviews={reviews_data?.reviews} />
           </div>
         </div>
       </div>
