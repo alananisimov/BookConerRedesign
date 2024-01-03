@@ -2,7 +2,7 @@ import React, { Suspense, useState } from "react";
 import type { GetServerSideProps } from "next";
 import Layout from "@/app/layout";
 import prisma from "@/lib/prisma";
-import BookProps from "@/app/models";
+import BookProps, { Review } from "@/app/models";
 import Book from "@/app/models";
 import { Card, CardHeader, CardTitle } from "shadcn/components/ui/card";
 import { CardContent } from "shadcn/components/ui/card";
@@ -28,9 +28,32 @@ import { RootState } from "../redux/rootReducer";
 // type Props = {
 //   feed: Book[];
 // };
-
+export type book_plus_reviews = ({
+  reviews: {
+    id: number;
+    content: string;
+    rating: number;
+    bookId: number;
+    userId: string;
+  }[];
+} & {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  image: string;
+  category: string;
+  rate: number;
+  count: number;
+  userEmail: string;
+  genre: string;
+})[];
 export default async function Home() {
-  const feed: Book[] = await prisma.book.findMany({});
+  const feed: book_plus_reviews = await prisma.book.findMany({
+    include: {
+      reviews: true,
+    },
+  });
   return (
     <div className=" z-10 w-full px-6 xl:px-0 lg:max-w-screen-xl xl:mx-auto">
       <div className=" text-xl sm:text-2xl flex justify-between">

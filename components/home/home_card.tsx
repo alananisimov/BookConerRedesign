@@ -7,8 +7,9 @@ import Book from "@/app/models";
 import { Star } from "lucide-react";
 import { Badge } from "shadcn/components/ui/badge";
 import Link from "next/link";
+import { book_plus_reviews } from "@/app/home/page";
 interface props {
-  book: Book;
+  book: book_plus_reviews[0];
 }
 export default function HomeCard({ book }: props) {
   const [isLoaded, setLoaded] = useState(Boolean);
@@ -38,15 +39,19 @@ export default function HomeCard({ book }: props) {
               <div className="text-gray-600 text-sm mt-2"></div>
             </div>
 
-            <div className="mt-2 flex">
-              {Array(Math.round(book.rate))
-                .fill("")
-                .map((_, i) => (
-                  <Star key={i} className="w-3" />
-                ))}
-
-              <div className="ml-2 text-gray-600 text-sm my-auto">
-                {book.count} отзывов
+            <div className="mt-2 flex gap-x-2">
+              {book.reviews.length > 0 && (
+                <div className="inline-flex">
+                  {Array(Math.round(book.reviews.length))
+                    .fill("")
+                    .map((_, i) => (
+                      <Star key={i} className="w-3" />
+                    ))}
+                </div>
+              )}
+              <div className=" text-gray-600 text-sm my-auto">
+                {book.reviews.length}{" "}
+                {book.reviews.length >= 5 ? "отзывов" : "отзыва"}
               </div>
             </div>
           </div>

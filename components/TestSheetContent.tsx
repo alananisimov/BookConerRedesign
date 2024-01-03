@@ -143,16 +143,16 @@ export default function TestSheetContent({ cartItems }: args) {
         })
       ) : (
         <div>
-          <div className="flex rounded-lg bg-white flex-row border mx-auto my-auto max-w-sm">
+          <div className="flex rounded-lg bg-white flex-row border mx-auto my-auto max-w-sm ">
             <Image
-              className=" rounded-md object-cover object-center"
+              className=" rounded-md object-cover object-center h-16 w-16"
               src="https://i.ibb.co/mCTDNvJ/empty-4731755.png"
               alt="No cart items"
               height={96}
               width={96}
             />
 
-            <div className="flex w-full flex-col  my-auto">
+            <div className="flex w-full flex-col  my-auto pr-1.5">
               <span className="text-sm">
                 Вы еще ничего не положили в корзину
               </span>
