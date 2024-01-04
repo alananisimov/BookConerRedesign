@@ -27,6 +27,6 @@ export type ApiError = {
 export type CreateReviewData = {
   content: string;
   rating: number;
-  userId: string;
+  userEmail: string;
   bookId: number;
 };

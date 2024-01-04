@@ -39,19 +39,25 @@ import { Toaster } from "sonner";
 import { toast } from "sonner";
 import { ReviewResponse } from "@/pages/api/reviews/get_review";
 import ReviewBlock from "./ReviewBlock";
+import { Review } from "@prisma/client";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 interface props {
   product: Book;
   buyed_books: Book[] | undefined;
+  user_reviews: Review[] | undefined;
 }
-export function BookViewWrapper({ product, buyed_books }: props) {
+export function BookViewWrapper({ product, buyed_books, user_reviews }: props) {
   return (
     <Provider store={store}>
       <Toaster />
       <PersistGate loading={null} persistor={persistor}>
-        <BookView product={product} buyed_books={buyed_books} />
+        <BookView
+          product={product}
+          buyed_books={buyed_books}
+          user_reviews={user_reviews}
+        />
       </PersistGate>
     </Provider>
   );
@@ -67,7 +73,11 @@ async function fetchReviews({ product_id }: { product_id: number }) {
   return data;
 }
 
-export default function BookView({ product, buyed_books }: props) {
+export default function BookView({
+  product,
+  buyed_books,
+  user_reviews,
+}: props) {
   const [reviews_data, setReviewsData] = useState<ReviewResponse>();
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [canAddReview, setCanAddReview] = useState(false);
@@ -79,11 +89,16 @@ export default function BookView({ product, buyed_books }: props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useReviewsData();
     if (buyed_books) {
+      const hasReviewInThisBook = user_reviews?.some(
+        (review) => review.bookId === product.id
+      );
       setCanAddReview(
-        buyed_books?.some((book) => book.id === product.id) || false
+        (buyed_books?.some((book) => book.id === product.id) &&
+          !hasReviewInThisBook) ||
+          false
       );
     }
-  }, [buyed_books, product.id]);
+  }, [buyed_books, product.id, user_reviews]);
   const product_data = {
     name: product.title,
     price: "$" + product.price,
@@ -264,8 +279,10 @@ export default function BookView({ product, buyed_books }: props) {
           </div>
           <div className=" lg:max-w-5xl mx-auto w-full">
             <ReviewBlock
+              user_reviews={user_reviews}
               reviews={reviews_data?.reviews}
               canAddReview={canAddReview}
+              product={product}
             />
           </div>
         </div>

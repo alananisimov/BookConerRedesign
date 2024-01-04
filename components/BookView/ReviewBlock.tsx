@@ -1,11 +1,20 @@
 import Book from "@/app/models";
 import { cn } from "@/lib/utils";
-import { User } from "@prisma/client";
+import { Review, User } from "@prisma/client";
 import { motion } from "framer-motion";
 import { StarIcon } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
+import { useState } from "react";
 import { Button } from "shadcn/components/ui/button";
+import { boolean } from "zod";
+import Modal from "../shared/modal";
+import { Label } from "shadcn/components/ui/label";
+import { Input } from "shadcn/components/ui/input";
+import { DialogDescription, DialogTitle } from "shadcn/components/ui/dialog";
+import { Textarea } from "shadcn/components/ui/textarea";
+import ReviewModalContent from "./ReviewModalContent";
+import { toast } from "sonner";
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -43,11 +52,42 @@ interface args {
       }[]
     | undefined;
   canAddReview: boolean;
+  product: Book;
+  user_reviews: Review[] | undefined;
 }
-
-export default function ReviewBlock({ reviews, canAddReview }: args) {
+async function deleteReviewReq(reviewId: number) {
+  const res = await fetch(`/api/reviews/delete_review?reviewId=${reviewId}`, {
+    method: "POST",
+  });
+  console.log(res);
+  if (res.status == 202) {
+    return "Ok";
+  }
+}
+export default function ReviewBlock({
+  reviews,
+  canAddReview,
+  product,
+  user_reviews,
+}: args) {
+  const [addReviewOpen, setAddReviewOpen] = useState(Boolean);
+  const canDeleteReview = (reviewId: number) => {
+    return user_reviews?.some((userReview) => userReview.id === reviewId);
+  };
+  async function deleteReview(reviewId: number) {
+    if ((await deleteReviewReq(reviewId)) == "Ok") {
+      toast("Вы успешно удалили отзыв!");
+    } else {
+      toast("Произошла ошибка при удалении отзыва");
+    }
+  }
   return (
     <>
+      <ReviewModalContent
+        product={product}
+        addReviewOpen={addReviewOpen}
+        setAddReviewOpen={setAddReviewOpen}
+      />
       {reviews !== undefined &&
         (!reviews.length ? (
           <div className="px-6">
@@ -59,7 +99,11 @@ export default function ReviewBlock({ reviews, canAddReview }: args) {
                   <div className="text-sm max-h-24 w-full break-words">
                     Добавь свой отзыв на эту книгу!
                   </div>
-                  <Button variant={"outline"} className="my-auto">
+                  <Button
+                    variant={"outline"}
+                    className="my-auto"
+                    onClick={() => setAddReviewOpen(true)}
+                  >
                     Добавить
                   </Button>
                 </div>
@@ -68,7 +112,7 @@ export default function ReviewBlock({ reviews, canAddReview }: args) {
           </div>
         ) : (
           <div className=" h-full w-full">
-            <h1 className="m-4 font-medium text-xl w-full">Все отзывы</h1>
+            <h1 className="m-4 font-medium text-xl">Все отзывы</h1>
             <motion.div
               className=" "
               variants={container}
@@ -83,9 +127,16 @@ export default function ReviewBlock({ reviews, canAddReview }: args) {
                     variants={item_style}
                   >
                     <div
-                      className="flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent h-full"
+                      className="flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent h-full relative"
                       key={item.id}
                     >
+                      {canDeleteReview(item.id) && (
+                        <div className="absolute right-0 top-0">
+                          <Button onClick={() => deleteReview(item.id)}>
+                            Удалить
+                          </Button>
+                        </div>
+                      )}
                       <div className="inline-flex w-full gap-x-2">
                         <div className="w-8 h-8 mt-1">
                           <Image
@@ -153,7 +204,13 @@ export default function ReviewBlock({ reviews, canAddReview }: args) {
                       <div className="text-sm max-h-24 w-full break-words">
                         Добавь свой отзыв на эту книгу!
                       </div>
-                      <Button variant={"outline"} className="my-auto">
+                      <Button
+                        variant={"outline"}
+                        className="my-auto"
+                        onClick={() => {
+                          setAddReviewOpen(true);
+                        }}
+                      >
                         Добавить
                       </Button>
                     </div>
