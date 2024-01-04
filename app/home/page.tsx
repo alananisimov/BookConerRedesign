@@ -34,7 +34,7 @@ export type book_plus_reviews = ({
     content: string;
     rating: number;
     bookId: number;
-    userId: string;
+    userEmail: string;
   }[];
 } & {
   id: number;
