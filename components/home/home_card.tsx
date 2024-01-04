@@ -15,7 +15,7 @@ export default function HomeCard({ book }: props) {
   const [isLoaded, setLoaded] = useState(Boolean);
   return (
     <Link href={`/books/${book.id}`}>
-      <Card className=" group hover:cursor-pointer">
+      <Card className=" hover:scale-105 transition-all">
         <CardContent className="grid">
           <Image
             src={book.image}
@@ -23,7 +23,7 @@ export default function HomeCard({ book }: props) {
             priority={true}
             width={"200"}
             height={"200"}
-            className="group-hover:blur-sm z-0"
+            className="group-hover:blur-sm z-0 h-56 w-auto"
           />
           <div className="mt-3">
             <Badge
@@ -32,7 +32,9 @@ export default function HomeCard({ book }: props) {
             >
               {book.category}
             </Badge>
-            <div className="mt-2 font-semibold leading-tight">{book.title}</div>
+            <div className="mt-2 font-semibold leading-tight text-ellipsis text-wrap line-clamp-1 break-words">
+              {book.title}
+            </div>
 
             <div>
               Цена: {book.price}

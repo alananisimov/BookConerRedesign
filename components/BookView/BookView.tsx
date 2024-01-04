@@ -34,7 +34,7 @@ import Link from "next/link";
 import { CartSheetWrapper } from "../TestSheet";
 import { LoadingDots } from "../shared/icons";
 import useSWR, { Fetcher } from "swr";
-import { User } from "next-auth";
+import { Session, User } from "next-auth";
 import { Toaster } from "sonner";
 import { toast } from "sonner";
 import { ReviewResponse } from "@/pages/api/reviews/get_review";
@@ -44,13 +44,14 @@ function classNames(...classes: string[]) {
 }
 interface props {
   product: Book;
+  buyed_books: Book[] | undefined;
 }
-export function BookViewWrapper({ product }: props) {
+export function BookViewWrapper({ product, buyed_books }: props) {
   return (
     <Provider store={store}>
       <Toaster />
       <PersistGate loading={null} persistor={persistor}>
-        <BookView product={product} />
+        <BookView product={product} buyed_books={buyed_books} />
       </PersistGate>
     </Provider>
   );
@@ -66,8 +67,10 @@ async function fetchReviews({ product_id }: { product_id: number }) {
   return data;
 }
 
-export default function BookView({ product }: props) {
+export default function BookView({ product, buyed_books }: props) {
   const [reviews_data, setReviewsData] = useState<ReviewResponse>();
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [canAddReview, setCanAddReview] = useState(false);
   useEffect(() => {
     async function useReviewsData() {
       const newReviews = await fetchReviews({ product_id: product.id });
@@ -75,7 +78,12 @@ export default function BookView({ product }: props) {
     }
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useReviewsData();
-  }, [product.id]);
+    if (buyed_books) {
+      setCanAddReview(
+        buyed_books?.some((book) => book.id === product.id) || false
+      );
+    }
+  }, [buyed_books, product.id]);
   const product_data = {
     name: product.title,
     price: "$" + product.price,
@@ -138,7 +146,7 @@ export default function BookView({ product }: props) {
               <a
                 href={product_data.href}
                 aria-current="page"
-                className="font-medium text-gray-500 hover:text-gray-600"
+                className="font-medium text-gray-500 hover:text-gray-600 line-clamp-1"
               >
                 {product_data.name}
               </a>
@@ -156,12 +164,14 @@ export default function BookView({ product }: props) {
                   className="h-full w-full object-cover object-center"
                   width={400}
                   height={500}
+                  blurDataURL="URL"
+                  placeholder="blur"
                 />
               </div>
             </div>
 
             {/* Product info */}
-            <div className=" max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+            <div className=" max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16 sm:w-1/2">
               <div className="lg:col-span-2  lg:pr-8">
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                   {product_data.name}
@@ -205,12 +215,22 @@ export default function BookView({ product }: props) {
                 <div className="py-6 lg:col-span-2 lg:col-start-1 lg:pb-16 lg:pr-8 lg:pt-6">
                   {/* Description and details */}
                   <div>
-                    <h3 className="">Description</h3>
+                    <h3 className="">Описание:</h3>
 
-                    <div className="space-y-6">
-                      <p className="text-base text-gray-900">
-                        {product.description}
+                    <div className="">
+                      <p className="text-base text-gray-900 overflow-hidden text-pretty">
+                        {showFullDescription
+                          ? product.description
+                          : `${product.description.slice(0, 200)}...`}
                       </p>
+                      {!showFullDescription && (
+                        <button
+                          className="text-gray-900 hover:underline font-bold"
+                          onClick={() => setShowFullDescription(true)}
+                        >
+                          ...ещё
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -243,7 +263,10 @@ export default function BookView({ product }: props) {
             </div>
           </div>
           <div className=" lg:max-w-5xl mx-auto w-full">
-            <ReviewBlock reviews={reviews_data?.reviews} />
+            <ReviewBlock
+              reviews={reviews_data?.reviews}
+              canAddReview={canAddReview}
+            />
           </div>
         </div>
       </div>

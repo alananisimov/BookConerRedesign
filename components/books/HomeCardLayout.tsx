@@ -42,7 +42,7 @@ export default function HomeCardLayout({ feed }: args) {
   );
   return (
     <>
-      <motion.ul
+      <motion.div
         className=" "
         variants={container}
         initial="hidden"
@@ -51,11 +51,9 @@ export default function HomeCardLayout({ feed }: args) {
         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-16 gap-6 mt-4">
           {filteredBooks.length > 0 &&
             filteredBooks.map((book) => (
-              <motion.li key={book.id} className="item" variants={item}>
-                <div className="w-full">
-                  <HomeCard book={book} />
-                </div>
-              </motion.li>
+              <motion.div key={book.id} className="item" variants={item}>
+                <HomeCard book={book} />
+              </motion.div>
             ))}
         </div>
         {filteredBooks.length === 0 && (
@@ -65,7 +63,7 @@ export default function HomeCardLayout({ feed }: args) {
             </h1>
           </div>
         )}
-      </motion.ul>
+      </motion.div>
     </>
   );
 }

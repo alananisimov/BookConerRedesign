@@ -14,7 +14,7 @@ import CartButtonWrapper from "./CartButtonWrapper";
 
 export default function NavBar({ session }: { session: Session | null }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
-  const scrolled = useScroll(50);
+  const scrolled = useScroll(25);
   return (
     <>
       <SignInModal />

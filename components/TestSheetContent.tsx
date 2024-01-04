@@ -64,7 +64,9 @@ export default function TestSheetContent({ cartItems }: args) {
                   />
                 </div>
                 <div className="flex flex-1 flex-col text-base">
-                  <span className="leading-tight">{currentBook.title}</span>
+                  <span className="leading-tight line-clamp-2">
+                    {currentBook.title}
+                  </span>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
                     {currentBook.category}
                   </p>

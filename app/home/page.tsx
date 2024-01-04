@@ -54,6 +54,15 @@ export default async function Home() {
       reviews: true,
     },
   });
+  const availableGenres = await prisma.book.findMany({
+    select: {
+      genre: true,
+    },
+  });
+  const genres = availableGenres.map((genre, index) => ({
+    id: index.toString(),
+    label: genre.genre,
+  }));
   return (
     <div className=" z-10 w-full px-6 xl:px-0 lg:max-w-screen-xl xl:mx-auto">
       <div className=" text-xl sm:text-2xl flex justify-between">

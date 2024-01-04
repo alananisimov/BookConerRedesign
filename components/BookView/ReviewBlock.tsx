@@ -1,8 +1,11 @@
+import Book from "@/app/models";
 import { cn } from "@/lib/utils";
 import { User } from "@prisma/client";
 import { motion } from "framer-motion";
 import { StarIcon } from "lucide-react";
+import { Session } from "next-auth";
 import Image from "next/image";
+import { Button } from "shadcn/components/ui/button";
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -39,9 +42,10 @@ interface args {
         };
       }[]
     | undefined;
+  canAddReview: boolean;
 }
 
-export default function ReviewBlock({ reviews }: args) {
+export default function ReviewBlock({ reviews, canAddReview }: args) {
   return (
     <>
       {reviews !== undefined &&
@@ -49,6 +53,18 @@ export default function ReviewBlock({ reviews }: args) {
           <div className="px-6">
             <h1 className="text-2xl font-medium">Пока что отзывов нет 😔</h1>
             <p>Мы надеемся что вы станете первым покупетелем данной книги!</p>
+            {canAddReview && (
+              <motion.div className="item" variants={item_style}>
+                <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent h-full mt-4 max-w-lg">
+                  <div className="text-sm max-h-24 w-full break-words">
+                    Добавь свой отзыв на эту книгу!
+                  </div>
+                  <Button variant={"outline"} className="my-auto">
+                    Добавить
+                  </Button>
+                </div>
+              </motion.div>
+            )}
           </div>
         ) : (
           <div className=" h-full w-full">
@@ -59,7 +75,7 @@ export default function ReviewBlock({ reviews }: args) {
               initial="hidden"
               animate="visible"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-4 md:gap-3 md:p-5 pt-0 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-3 p-4 md:gap-3 md:p-5 pt-0 w-full">
                 {reviews.map((item) => (
                   <motion.div
                     key={item.id}
@@ -71,7 +87,7 @@ export default function ReviewBlock({ reviews }: args) {
                       key={item.id}
                     >
                       <div className="inline-flex w-full gap-x-2">
-                        <div className="w-8 h-8">
+                        <div className="w-8 h-8 mt-1">
                           <Image
                             src={
                               item.user.image ||
@@ -115,7 +131,12 @@ export default function ReviewBlock({ reviews }: args) {
                                 ))}
                               </div>
                             </div>{" "}
-                            {item.rating + " Баллов"}
+                            {item.rating +
+                              (item.rating == 1
+                                ? " балл"
+                                : item.rating < 4
+                                  ? " балла"
+                                  : " баллов")}
                           </div>
                         </div>
                       </div>
@@ -126,6 +147,18 @@ export default function ReviewBlock({ reviews }: args) {
                     </div>
                   </motion.div>
                 ))}
+                {canAddReview && (
+                  <motion.div className="item" variants={item_style}>
+                    <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent h-full">
+                      <div className="text-sm max-h-24 w-full break-words">
+                        Добавь свой отзыв на эту книгу!
+                      </div>
+                      <Button variant={"outline"} className="my-auto">
+                        Добавить
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           </div>

@@ -5,8 +5,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface FiltersState {
   items: string[];
 }
-
-// Начальное состояние
 const initialState: FiltersState = {
   items: [
     "romantic",
