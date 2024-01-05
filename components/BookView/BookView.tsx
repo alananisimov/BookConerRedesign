@@ -22,21 +22,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { RadioGroup } from "@headlessui/react";
-import Book, { ApiError } from "@/app/models";
+import Book from "@/app/models";
 import Image from "next/image";
-import { useSelector, useDispatch, Provider } from "react-redux";
+import { useDispatch, Provider } from "react-redux";
 import store, { persistor } from "@/app/redux/store";
-import { RootState } from "@/app/redux/rootReducer";
-import { addItem, clearCart, removeItem } from "@/app/redux/cartSlice";
+import { addItem } from "@/app/redux/cartSlice";
 import { PersistGate } from "redux-persist/integration/react";
 import Link from "next/link";
 import { CartSheetWrapper } from "../TestSheet";
 import { LoadingDots } from "../shared/icons";
-import useSWR, { Fetcher } from "swr";
-import { Session, User } from "next-auth";
 import { Toaster } from "sonner";
-import { toast } from "sonner";
 import { ReviewResponse } from "@/pages/api/reviews/get_review";
 import ReviewBlock from "./ReviewBlock";
 import { Review } from "@prisma/client";
@@ -48,6 +43,7 @@ interface props {
   buyed_books: Book[] | undefined;
   user_reviews: Review[] | undefined;
 }
+
 export function BookViewWrapper({ product, buyed_books, user_reviews }: props) {
   return (
     <Provider store={store}>
@@ -81,15 +77,16 @@ export default function BookView({
   const [reviews_data, setReviewsData] = useState<ReviewResponse>();
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [canAddReview, setCanAddReview] = useState(false);
+  const [userReviewsData, setUserReviewsData] = useState(user_reviews);
+  async function refreshReviewsData() {
+    const newReviews = await fetchReviews({ product_id: product.id });
+    setReviewsData(newReviews);
+  }
   useEffect(() => {
-    async function useReviewsData() {
-      const newReviews = await fetchReviews({ product_id: product.id });
-      setReviewsData(newReviews);
-    }
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useReviewsData();
+    refreshReviewsData();
     if (buyed_books) {
-      const hasReviewInThisBook = user_reviews?.some(
+      const hasReviewInThisBook = userReviewsData?.some(
         (review) => review.bookId === product.id
       );
       setCanAddReview(
@@ -98,7 +95,8 @@ export default function BookView({
           false
       );
     }
-  }, [buyed_books, product.id, user_reviews]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [buyed_books, product.id, userReviewsData]);
   const product_data = {
     name: product.title,
     price: "$" + product.price,
@@ -279,9 +277,10 @@ export default function BookView({
           </div>
           <div className=" lg:max-w-5xl mx-auto w-full">
             <ReviewBlock
-              user_reviews={user_reviews}
+              user_reviews={userReviewsData}
               reviews={reviews_data}
-              setReviews={setReviewsData}
+              setUserReviews={setUserReviewsData}
+              refreshReviews={refreshReviewsData}
               canAddReview={canAddReview}
               setCanAddReview={setCanAddReview}
               product={product}

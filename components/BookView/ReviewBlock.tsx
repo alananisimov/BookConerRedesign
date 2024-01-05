@@ -1,21 +1,15 @@
 import Book from "@/app/models";
 import { cn } from "@/lib/utils";
-import { Review, User } from "@prisma/client";
+import { Review } from "@prisma/client";
 import { motion } from "framer-motion";
 import { StarIcon } from "lucide-react";
-import { Session } from "next-auth";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "shadcn/components/ui/button";
-import { boolean } from "zod";
-import Modal from "../shared/modal";
-import { Label } from "shadcn/components/ui/label";
-import { Input } from "shadcn/components/ui/input";
-import { DialogDescription, DialogTitle } from "shadcn/components/ui/dialog";
-import { Textarea } from "shadcn/components/ui/textarea";
 import ReviewModalContent from "./ReviewModalContent";
 import { toast } from "sonner";
 import { ReviewResponse } from "@/pages/api/reviews/get_review";
+import { refreshUserReviews } from "@/app/actions/refreshUserReviews";
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -37,48 +31,57 @@ const item_style = {
 };
 interface args {
   reviews: ReviewResponse | undefined;
-  setReviews: Dispatch<SetStateAction<ReviewResponse | undefined>>;
   canAddReview: boolean;
+  refreshReviews: () => Promise<void>;
+  setUserReviews: Dispatch<
+    SetStateAction<
+      | {
+          id: number;
+          content: string;
+          rating: number;
+          bookId: number;
+          userEmail: string;
+        }[]
+      | undefined
+    >
+  >;
   setCanAddReview: Dispatch<SetStateAction<boolean>>;
   product: Book;
   user_reviews: Review[] | undefined;
-}
-async function deleteReviewReq(reviewId: number) {
-  const res = await fetch(`/api/reviews/delete_review?reviewId=${reviewId}`, {
-    method: "POST",
-  });
-  console.log(res);
-  if (res.status == 202) {
-    return "Ok";
-  }
 }
 export default function ReviewBlock({
   reviews,
   canAddReview,
   setCanAddReview,
   product,
+  setUserReviews,
+  refreshReviews,
   user_reviews,
-  setReviews,
 }: args) {
   const [addReviewOpen, setAddReviewOpen] = useState(Boolean);
   const canDeleteReview = (reviewId: number) => {
     return user_reviews?.some((userReview) => userReview.id === reviewId);
   };
   async function deleteReview(reviewId: number) {
-    if ((await deleteReviewReq(reviewId)) === "Ok") {
-      if (reviews) {
-        const updatedReviews = reviews.reviews.filter(
-          (review) => review.id !== reviewId
-        );
+    try {
+      const res = await fetch(
+        `/api/reviews/delete_review?reviewId=${reviewId}`,
+        {
+          method: "POST",
+        }
+      );
+      refreshReviews();
+
+      if (res.status === 202) {
         toast("Вы успешно удалили отзыв!");
+
         setCanAddReview(true);
         setAddReviewOpen(false);
-        setReviews({
-          ...reviews,
-          reviews: updatedReviews,
-        });
+      } else {
+        toast("Произошла ошибка при удалении отзыва");
       }
-    } else {
+    } catch (error) {
+      console.error("Error deleting review:", error);
       toast("Произошла ошибка при удалении отзыва");
     }
   }
@@ -86,7 +89,9 @@ export default function ReviewBlock({
     <>
       <ReviewModalContent
         product={product}
+        refreshReviews={refreshReviews}
         setCanAddReview={setCanAddReview}
+        setUserReviews={setUserReviews}
         addReviewOpen={addReviewOpen}
         setAddReviewOpen={setAddReviewOpen}
       />

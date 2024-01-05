@@ -8,11 +8,27 @@ import { Button } from "shadcn/components/ui/button";
 import { toast } from "sonner";
 import { getSession } from "next-auth/react";
 import Book, { CreateReviewData } from "@/app/models";
+import { ReviewResponse } from "@/pages/api/reviews/get_review";
+import { User } from "@prisma/client";
+import { refreshUserReviews } from "@/app/actions/refreshUserReviews";
 type args = {
   setAddReviewOpen: Dispatch<SetStateAction<boolean>>;
   addReviewOpen: boolean;
   product: Book;
+  setUserReviews: Dispatch<
+    SetStateAction<
+      | {
+          id: number;
+          content: string;
+          rating: number;
+          bookId: number;
+          userEmail: string;
+        }[]
+      | undefined
+    >
+  >;
   setCanAddReview: Dispatch<SetStateAction<boolean>>;
+  refreshReviews: () => Promise<void>;
 };
 type createReviewProps = {
   data: CreateReviewData;
@@ -24,14 +40,25 @@ async function createReview({ data }: createReviewProps) {
   });
   console.log(req);
   if (req.status == 202) {
-    return "Ok";
+    const createdReview: {
+      id: number;
+      content: string;
+      rating: number;
+      bookId: number;
+      user: User;
+    } | null = await req.json();
+    console.log(createdReview);
+    return createdReview;
   }
+  return null;
 }
 export default function ReviewModalContent({
   setAddReviewOpen,
   addReviewOpen,
   setCanAddReview,
+  setUserReviews,
   product,
+  refreshReviews,
 }: args) {
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
@@ -45,7 +72,7 @@ export default function ReviewModalContent({
     if (
       currentSession &&
       currentSession.user &&
-      typeof currentSession.user.email == "string"
+      typeof currentSession.user.email === "string"
     ) {
       const response = await createReview({
         data: {
@@ -55,9 +82,13 @@ export default function ReviewModalContent({
           userEmail: currentSession.user.email,
         },
       });
-      if (response == "Ok") {
+
+      if (response) {
         setAddReviewOpen(false);
         setCanAddReview(false);
+        const refreshed = await refreshUserReviews();
+        setUserReviews(refreshed);
+        refreshReviews();
         toast("Спасибо за ваш отзыв! ❤️");
       } else {
         setAddReviewOpen(false);
@@ -66,6 +97,7 @@ export default function ReviewModalContent({
       }
     }
   };
+
   function handleTextChange(event: any) {
     setText(event.target.value);
   }

@@ -1,3 +1,4 @@
+import { refreshUserReviews } from "@/app/actions/refreshUserReviews";
 import { authOptions } from "@/app/authOptions";
 import Book from "@/app/models";
 import BookView, { BookViewWrapper } from "@/components/BookView/BookView";
@@ -20,24 +21,7 @@ export default async function BookPreview({
   let buyed_books: Book[] | undefined = undefined;
   let user_reviews: Review[] | undefined = undefined;
   const session = await getServerSession(authOptions);
-  if (session && session.user && session.user.email) {
-    const user_req = await prismaWithCaching.user.findUnique({
-      include: {
-        Book: true,
-      },
-      where: {
-        email: session.user.email,
-      },
-    });
-    buyed_books = user_req?.Book;
-    const user_reviews_req = await prismaWithCaching.review.findMany({
-      where: {
-        userEmail: session.user.email,
-      },
-    });
-    user_reviews = user_reviews_req;
-  }
-
+  user_reviews = await refreshUserReviews();
   return (
     <>
       {selectedBook ? (

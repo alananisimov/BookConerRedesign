@@ -31,6 +31,9 @@ export default async function handler(
       userEmail: userEmail,
       bookId: bookId,
     },
+    include: {
+      user: true,
+    },
   });
   return res.status(202).json(createReview);
 }
