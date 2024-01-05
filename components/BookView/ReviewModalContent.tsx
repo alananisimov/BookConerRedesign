@@ -87,7 +87,7 @@ export default function ReviewModalContent({
         setAddReviewOpen(false);
         setCanAddReview(false);
         const refreshed = await refreshUserReviews();
-        setUserReviews(refreshed);
+        setUserReviews(refreshed.user_reviews);
         refreshReviews();
         toast("Спасибо за ваш отзыв! ❤️");
       } else {

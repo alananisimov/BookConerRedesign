@@ -13,15 +13,17 @@ export default async function BookPreview({
   params: { slug: string };
 }) {
   let selectedBook = await prismaWithCaching.book.findFirst({
-    cacheStrategy: { ttl: 60 },
+    cacheStrategy: { ttl: 60, swr: 60 },
     where: {
       id: parseInt(params.slug) || 666,
     },
   });
   let buyed_books: Book[] | undefined = undefined;
+
   let user_reviews: Review[] | undefined = undefined;
-  const session = await getServerSession(authOptions);
-  user_reviews = await refreshUserReviews();
+  const refreshData = await refreshUserReviews();
+  user_reviews = refreshData.user_reviews;
+  buyed_books = refreshData.buyed_books;
   return (
     <>
       {selectedBook ? (

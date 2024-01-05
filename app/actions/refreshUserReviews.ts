@@ -26,6 +26,6 @@ export async function refreshUserReviews() {
     });
     user_reviews = user_reviews_req;
   }
-  console.log("refreshed");
-  return user_reviews;
+  console.log("refreshed", user_reviews, buyed_books);
+  return { user_reviews, buyed_books };
 }
