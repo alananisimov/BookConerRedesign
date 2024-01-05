@@ -29,3 +29,7 @@ export type CreateReviewData = {
   userEmail: string;
   bookId: number;
 };
+export type AddBuyedBookData = {
+  Book: Book;
+  userId: string;
+};

@@ -12,6 +12,7 @@ export default async function BookPreview({
   params: { slug: string };
 }) {
   let selectedBook = await prisma.book.findFirst({
+    cacheStrategy: { ttl: 60 },
     where: {
       id: parseInt(params.slug) || 666,
     },

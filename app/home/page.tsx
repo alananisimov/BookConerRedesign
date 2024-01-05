@@ -46,6 +46,7 @@ export default async function Home() {
     include: {
       reviews: true,
     },
+    cacheStrategy: { ttl: 60 },
   });
   const updatedFeed = feed.map((book) => {
     const totalRating = book.reviews.reduce(

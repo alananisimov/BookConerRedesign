@@ -52,7 +52,11 @@ export default function HomeCard({ book }: props) {
               )}
               <div className=" text-gray-600 text-sm my-auto">
                 {book.reviews.length}{" "}
-                {book.reviews.length >= 5 ? "отзывов" : "отзыва"}
+                {book.reviews.length == 1
+                  ? "отзыв"
+                  : book.reviews.length >= 5
+                    ? "отзывов"
+                    : "отзыва"}
               </div>
             </div>
           </div>
