@@ -280,8 +280,10 @@ export default function BookView({
           <div className=" lg:max-w-5xl mx-auto w-full">
             <ReviewBlock
               user_reviews={user_reviews}
-              reviews={reviews_data?.reviews}
+              reviews={reviews_data}
+              setReviews={setReviewsData}
               canAddReview={canAddReview}
+              setCanAddReview={setCanAddReview}
               product={product}
             />
           </div>

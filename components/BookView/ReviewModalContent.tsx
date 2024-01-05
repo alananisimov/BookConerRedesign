@@ -12,6 +12,7 @@ type args = {
   setAddReviewOpen: Dispatch<SetStateAction<boolean>>;
   addReviewOpen: boolean;
   product: Book;
+  setCanAddReview: Dispatch<SetStateAction<boolean>>;
 };
 type createReviewProps = {
   data: CreateReviewData;
@@ -29,6 +30,7 @@ async function createReview({ data }: createReviewProps) {
 export default function ReviewModalContent({
   setAddReviewOpen,
   addReviewOpen,
+  setCanAddReview,
   product,
 }: args) {
   const [rating, setRating] = useState(0);
@@ -55,9 +57,11 @@ export default function ReviewModalContent({
       });
       if (response == "Ok") {
         setAddReviewOpen(false);
+        setCanAddReview(false);
         toast("Спасибо за ваш отзыв! ❤️");
       } else {
         setAddReviewOpen(false);
+        setCanAddReview(true);
         toast("Произошла ошибка при добавлении отзыва!");
       }
     }

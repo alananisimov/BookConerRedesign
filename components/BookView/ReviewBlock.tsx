@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { StarIcon } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "shadcn/components/ui/button";
 import { boolean } from "zod";
 import Modal from "../shared/modal";
@@ -15,6 +15,7 @@ import { DialogDescription, DialogTitle } from "shadcn/components/ui/dialog";
 import { Textarea } from "shadcn/components/ui/textarea";
 import ReviewModalContent from "./ReviewModalContent";
 import { toast } from "sonner";
+import { ReviewResponse } from "@/pages/api/reviews/get_review";
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -35,23 +36,10 @@ const item_style = {
   },
 };
 interface args {
-  reviews:
-    | []
-    | {
-        id: number;
-        content: string;
-        rating: number;
-        bookId: number;
-        user: {
-          id: string;
-          name: string | null;
-          email: string | null;
-          emailVerified: Date | null;
-          image: string | null;
-        };
-      }[]
-    | undefined;
+  reviews: ReviewResponse | undefined;
+  setReviews: Dispatch<SetStateAction<ReviewResponse | undefined>>;
   canAddReview: boolean;
+  setCanAddReview: Dispatch<SetStateAction<boolean>>;
   product: Book;
   user_reviews: Review[] | undefined;
 }
@@ -67,16 +55,29 @@ async function deleteReviewReq(reviewId: number) {
 export default function ReviewBlock({
   reviews,
   canAddReview,
+  setCanAddReview,
   product,
   user_reviews,
+  setReviews,
 }: args) {
   const [addReviewOpen, setAddReviewOpen] = useState(Boolean);
   const canDeleteReview = (reviewId: number) => {
     return user_reviews?.some((userReview) => userReview.id === reviewId);
   };
   async function deleteReview(reviewId: number) {
-    if ((await deleteReviewReq(reviewId)) == "Ok") {
-      toast("Вы успешно удалили отзыв!");
+    if ((await deleteReviewReq(reviewId)) === "Ok") {
+      if (reviews) {
+        const updatedReviews = reviews.reviews.filter(
+          (review) => review.id !== reviewId
+        );
+        toast("Вы успешно удалили отзыв!");
+        setCanAddReview(true);
+        setAddReviewOpen(false);
+        setReviews({
+          ...reviews,
+          reviews: updatedReviews,
+        });
+      }
     } else {
       toast("Произошла ошибка при удалении отзыва");
     }
@@ -85,11 +86,12 @@ export default function ReviewBlock({
     <>
       <ReviewModalContent
         product={product}
+        setCanAddReview={setCanAddReview}
         addReviewOpen={addReviewOpen}
         setAddReviewOpen={setAddReviewOpen}
       />
       {reviews !== undefined &&
-        (!reviews.length ? (
+        (!reviews.reviews.length ? (
           <div className="px-6">
             <h1 className="text-2xl font-medium">Пока что отзывов нет 😔</h1>
             <p>Мы надеемся что вы станете первым покупетелем данной книги!</p>
@@ -120,7 +122,7 @@ export default function ReviewBlock({
               animate="visible"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-3 p-4 md:gap-3 md:p-5 pt-0 w-full">
-                {reviews.map((item) => (
+                {reviews.reviews.map((item) => (
                   <motion.div
                     key={item.id}
                     className="item"

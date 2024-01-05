@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { ApiError, Review } from "@/app/models";
 import { User } from "@prisma/client";
+import { kv } from "@vercel/kv";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -21,6 +22,7 @@ export default async function handler(
       },
     });
     if (reviews) {
+      kv.del(`reviews-${reviews.bookId}`);
       return res.status(202).json(reviews);
     }
   } else return res.status(400);

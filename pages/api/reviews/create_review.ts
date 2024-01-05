@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { ApiError, CreateReviewData, Review } from "@/app/models";
+import { kv } from "@vercel/kv";
 interface createReviewRequest extends NextApiRequest {
   body: string;
 }
@@ -22,6 +23,7 @@ export default async function handler(
   }
   const { content, rating, userEmail, bookId } = requestBody;
   console.log(content);
+  kv.del(`reviews-${bookId}`);
   const createReview = await prisma.review.create({
     data: {
       content: content,
