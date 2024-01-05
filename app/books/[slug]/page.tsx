@@ -28,12 +28,14 @@ export default async function BookPreview({
       where: {
         email: session.user.email,
       },
+      cacheStrategy: { swr: 60, ttl: 60 },
     });
     buyed_books = user_req?.Book;
     const user_reviews_req = await prisma.review.findMany({
       where: {
         userEmail: session.user.email,
       },
+      cacheStrategy: { swr: 60, ttl: 60 },
     });
     user_reviews = user_reviews_req;
   }
