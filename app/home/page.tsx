@@ -1,5 +1,5 @@
 import React from "react";
-import prisma from "@/lib/prisma";
+import prisma, { prismaWithCaching } from "@/lib/prisma";
 import ModalOpen from "@/components/home/ModalButton";
 import { HomeCardLayoutWrapper } from "@/components/books/HomeCardLayout";
 export type book_plus_reviews_init = ({
@@ -42,7 +42,7 @@ export type book_plus_reviews = {
 }[];
 
 export default async function Home() {
-  const feed: book_plus_reviews_init = await prisma.book.findMany({
+  const feed: book_plus_reviews_init = await prismaWithCaching.book.findMany({
     include: {
       reviews: true,
     },
