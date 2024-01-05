@@ -1,9 +1,9 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Modal from "../shared/modal";
 import { Button } from "shadcn/components/ui/button";
-import { Filter, FilterIcon, Settings } from "lucide-react";
+import { FilterIcon } from "lucide-react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

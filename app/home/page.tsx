@@ -1,34 +1,8 @@
-import React, { Suspense, useState } from "react";
-import type { GetServerSideProps } from "next";
-import Layout from "@/app/layout";
+import React from "react";
 import prisma from "@/lib/prisma";
-import BookProps, { Review } from "@/app/models";
-import Book from "@/app/models";
-import { Card, CardHeader, CardTitle } from "shadcn/components/ui/card";
-import { CardContent } from "shadcn/components/ui/card";
-import Image from "next/image";
-import { Skeleton } from "shadcn/components/ui/skeleton";
-import HomeCard from "@/components/home/home_card";
-import { ChakraProvider } from "@chakra-ui/react";
-import Modal from "@/components/shared/modal";
 import ModalOpen from "@/components/home/ModalButton";
-import HomeCardLayout, {
-  HomeCardLayoutWrapper,
-} from "@/components/books/HomeCardLayout";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/rootReducer";
-
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const feed = await prisma.book.findMany({});
-//   return {
-//     props: { feed },
-//   };
-// };
-
-// type Props = {
-//   feed: Book[];
-// };
-export type book_plus_reviews = ({
+import { HomeCardLayoutWrapper } from "@/components/books/HomeCardLayout";
+export type book_plus_reviews_init = ({
   reviews: {
     id: number;
     content: string;
@@ -45,24 +19,46 @@ export type book_plus_reviews = ({
   category: string;
   rate: number;
   count: number;
-  userEmail: string;
   genre: string;
 })[];
+export type book_plus_reviews = {
+  averageRating: number;
+  reviews: {
+    id: number;
+    content: string;
+    rating: number;
+    bookId: number;
+    userEmail: string;
+  }[];
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  image: string;
+  category: string;
+  rate: number;
+  count: number;
+  genre: string;
+}[];
+
 export default async function Home() {
-  const feed: book_plus_reviews = await prisma.book.findMany({
+  const feed: book_plus_reviews_init = await prisma.book.findMany({
     include: {
       reviews: true,
     },
   });
-  const availableGenres = await prisma.book.findMany({
-    select: {
-      genre: true,
-    },
+  const updatedFeed = feed.map((book) => {
+    const totalRating = book.reviews.reduce(
+      (sum, review) => sum + review.rating,
+      0
+    );
+    const averageRating = totalRating / book.reviews.length || 0;
+
+    return {
+      ...book,
+      averageRating,
+    };
   });
-  const genres = availableGenres.map((genre, index) => ({
-    id: index.toString(),
-    label: genre.genre,
-  }));
   return (
     <div className=" z-10 w-full px-6 xl:px-0 lg:max-w-screen-xl xl:mx-auto">
       <div className=" text-xl sm:text-2xl flex justify-between">
@@ -70,7 +66,7 @@ export default async function Home() {
         <ModalOpen />
       </div>
       <main className="text-black">
-        <HomeCardLayoutWrapper feed={feed} />
+        <HomeCardLayoutWrapper feed={updatedFeed} />
       </main>
     </div>
   );

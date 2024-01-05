@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Card, CardContent } from "shadcn/components/ui/card";
 import Image from "next/image";
-import Book from "@/app/models";
 import { Star } from "lucide-react";
 import { Badge } from "shadcn/components/ui/badge";
 import Link from "next/link";
@@ -42,9 +41,9 @@ export default function HomeCard({ book }: props) {
             </div>
 
             <div className="mt-2 flex gap-x-2">
-              {book.reviews.length > 0 && (
+              {book.averageRating > 0 && (
                 <div className="inline-flex">
-                  {Array(Math.round(book.reviews.length))
+                  {Array(Math.round(book.averageRating))
                     .fill("")
                     .map((_, i) => (
                       <Star key={i} className="w-3" />

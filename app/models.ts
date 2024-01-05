@@ -9,7 +9,6 @@ export default interface Book {
   category: string;
   rate: number;
   count: number;
-  userEmail: String;
   genre: string;
 }
 export type Review = {

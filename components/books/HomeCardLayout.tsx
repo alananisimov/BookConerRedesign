@@ -1,8 +1,7 @@
 "use client";
-import Book from "@/app/models";
 import HomeCard from "../home/home_card";
 import { motion } from "framer-motion";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/rootReducer";
 import store from "@/app/redux/store";
 import { book_plus_reviews } from "@/app/home/page";
