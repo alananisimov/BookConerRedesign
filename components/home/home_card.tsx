@@ -1,21 +1,23 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "shadcn/components/ui/card";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { Badge } from "shadcn/components/ui/badge";
 import Link from "next/link";
 import { book_plus_reviews } from "@/app/models";
-import { LoadingDots } from "../shared/icons";
+import React from "react";
 interface props {
   book: book_plus_reviews[0];
 }
+
 export default function HomeCard({ book }: props) {
   const [isLoaded, setLoaded] = useState(Boolean);
+  const [isIntersecting, setIntersecting] = useState(false);
   return (
     <Link href={`/books/${book.id}`}>
-      <Card className=" hover:scale-105 transition-all">
+      <Card className={" hover:scale-105 transition-all"}>
         <CardContent className="grid">
           <Image
             src={book.image}
@@ -25,7 +27,8 @@ export default function HomeCard({ book }: props) {
             sizes="132px"
             width={200}
             height={200}
-            className="group-hover:blur-sm z-0 h-56 w-auto object-cover"
+            onLoadedData={() => setLoaded(true)}
+            className=" z-0 h-56 w-auto object-cover"
           />
 
           <div className="mt-3">

@@ -48,7 +48,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           href={reviews.href}
           className="ml-3 text-sm font-medium text-blue-600 hover:text-blue-500"
         >
-          {reviews.totalCount} отзыва
+          {reviews.totalCount}{" "}
+          {reviews.totalCount == 1
+            ? "отзыв"
+            : reviews.totalCount >= 5
+              ? "отзывов"
+              : "отзыва"}
         </a>
       </div>
       <DescriptionDetails

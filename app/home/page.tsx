@@ -3,7 +3,6 @@ import prisma, { prismaWithCaching } from "@/lib/prisma";
 import ModalOpen from "@/components/home/ModalButton";
 import { HomeCardLayoutWrapper } from "@/components/books/HomeCardLayout";
 import getBooksFeed from "../actions/books/getBooksFeed.server";
-import Loading from "../loading";
 
 export default async function Home() {
   const updatedFeed = await getBooksFeed();
