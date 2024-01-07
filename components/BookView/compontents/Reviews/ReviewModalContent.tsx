@@ -63,10 +63,9 @@ export default function ReviewModalContent({
     setRating(selectedRating);
   };
   const submitReview = async (event: FormEvent) => {
+    setIsSubmitting(true);
+    setTimeout(() => setIsSubmitting(false), 3000);
     event.preventDefault();
-    if (isSubmitting) {
-      return;
-    }
     if (rating == 0) {
       toast("Пожалуйста укажите оценку товара");
       return;
@@ -83,7 +82,6 @@ export default function ReviewModalContent({
       currentSession.user &&
       typeof currentSession.user.email === "string"
     ) {
-      setIsSubmitting(true);
       const response = await createReview({
         content: text,
         rating: rating,
