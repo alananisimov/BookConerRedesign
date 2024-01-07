@@ -1,8 +1,6 @@
 "use server";
 import { authOptions } from "@/app/authOptions";
-import Book from "@/app/models";
-import prisma, { prismaWithCaching } from "@/lib/prisma";
-import { Review } from "@prisma/client";
+import { prismaWithCaching } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 
 export async function refreshUserReviews() {
@@ -14,7 +12,7 @@ export async function refreshUserReviews() {
   }
 
   const [user_req, user_reviews_req] = await Promise.all([
-    prisma.user.findFirst({
+    prismaWithCaching.user.findFirst({
       include: {
         Book: true,
       },
@@ -22,7 +20,7 @@ export async function refreshUserReviews() {
         email: session.user.email,
       },
     }),
-    prisma.review.findMany({
+    prismaWithCaching.review.findMany({
       where: {
         userEmail: session.user.email,
       },

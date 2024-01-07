@@ -38,6 +38,7 @@ import getReview from "@/app/actions/reviews/getReviews.server";
 import Breadcrumbs from "./compontents/Product/BreadCrumbs";
 import ProductInfo from "./compontents/Product/ProductInfo";
 import { openCart } from "@/app/redux/cartStateSlice";
+import Loading from "@/app/loading";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -114,7 +115,7 @@ export default function BookView({
   };
 
   const dispatch = useDispatch();
-  const [isCartOpen, setIsCartOpen] = useState(false);
+
   const [isLoading, setLoading] = useState(Boolean);
   return (
     <div className="">

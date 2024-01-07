@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Drawer } from "vaul";
 import * as Dialog from "@radix-ui/react-dialog";
 import useMediaQuery from "@/lib/hooks/use-media-query";
-import { motion } from "framer-motion";
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -13,10 +12,10 @@ const container = {
     scale: 1,
     transition: {
       delayChildren: 0.3,
-      staggerChildren: 0.2
-    }
-  }
-}
+      staggerChildren: 0.2,
+    },
+  },
+};
 export default function Modal({
   children,
   className,
@@ -38,7 +37,7 @@ export default function Modal({
           <Drawer.Content
             className={cn(
               "fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-gray-200 bg-white",
-              className,
+              className
             )}
           >
             <div className="sticky top-0 z-20 flex w-full items-center justify-center rounded-t-[10px] bg-inherit">
@@ -52,9 +51,7 @@ export default function Modal({
     );
   }
   return (
-    
     <Dialog.Root open={showModal} onOpenChange={setShowModal}>
-     
       <Dialog.Portal>
         <Dialog.Overlay
           // for detecting when there's an active opened modal
@@ -66,14 +63,12 @@ export default function Modal({
           onCloseAutoFocus={(e) => e.preventDefault()}
           className={cn(
             "animate-fade  fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden border border-gray-200 bg-white p-0 shadow-xl md:rounded-2xl",
-            className,
+            className
           )}
         >
           {children}
         </Dialog.Content>
       </Dialog.Portal>
-      
     </Dialog.Root>
-   
   );
 }

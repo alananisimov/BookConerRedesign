@@ -3,7 +3,6 @@ import prisma, { prismaWithCaching } from "../../../lib/prisma";
 import { CreateReviewData, book_plus_reviews_init } from "@/app/models";
 import { kv } from "@vercel/kv";
 
-// Server component
 export default async function getBooksFeed() {
   const feed: book_plus_reviews_init = await prismaWithCaching.book.findMany({
     include: {

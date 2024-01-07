@@ -1,12 +1,10 @@
-// Import necessary modules
 "use server";
-import prisma from "../../../lib/prisma";
+import prisma, { prismaWithCaching } from "../../../lib/prisma";
 import { ApiError } from "@/app/models";
 import { kv } from "@vercel/kv";
 
-// Server component
 export default async function deleteReview(reviewId: number) {
-  const reviews = await prisma.review.delete({
+  const reviews = await prismaWithCaching.review.delete({
     where: {
       id: reviewId,
     },

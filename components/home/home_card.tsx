@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Card, CardContent } from "shadcn/components/ui/card";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { Badge } from "shadcn/components/ui/badge";
 import Link from "next/link";
 import { book_plus_reviews } from "@/app/models";
+import { LoadingDots } from "../shared/icons";
 interface props {
   book: book_plus_reviews[0];
 }
@@ -26,6 +27,7 @@ export default function HomeCard({ book }: props) {
             height={200}
             className="group-hover:blur-sm z-0 h-56 w-auto object-cover"
           />
+
           <div className="mt-3">
             <Badge
               className="text-xs font-semibold px-2.5 py-0.5"

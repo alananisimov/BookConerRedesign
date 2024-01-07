@@ -1,21 +1,19 @@
-// Import necessary modules
 "use server";
-import prisma from "../../../lib/prisma";
+import prisma, { prismaWithCaching } from "../../../lib/prisma";
 import { ApiError, ReviewResponse } from "@/app/models";
 import { User } from "@prisma/client";
 import { kv } from "@vercel/kv";
-// Server component
+
 export default async function getReview(bookId: number) {
   const cacheKey = `reviews-${bookId}`;
 
-  // Try to fetch cached data
   const cachedData: ReviewResponse | null = await kv.get(cacheKey);
 
   if (cachedData) {
     return cachedData;
   }
 
-  const reviews = await prisma.review.findMany({
+  const reviews = await prismaWithCaching.review.findMany({
     include: {
       user: true,
     },
@@ -36,6 +34,5 @@ export default async function getReview(bookId: number) {
 
   await kv.set(cacheKey, JSON.stringify(response));
 
-  // Return the data needed for rendering
   return response;
 }
