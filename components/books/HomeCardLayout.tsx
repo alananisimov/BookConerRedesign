@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Provider, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/rootReducer";
 import store from "@/app/redux/store";
-import { book_plus_reviews } from "@/app/home/page";
+import { book_plus_reviews } from "@/app/models";
 interface args {
   feed: book_plus_reviews;
 }

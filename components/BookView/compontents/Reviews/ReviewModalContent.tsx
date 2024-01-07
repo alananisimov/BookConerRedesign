@@ -1,6 +1,6 @@
 import { StarIcon } from "lucide-react";
-import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
-import Modal from "../shared/modal";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import Modal from "../../../shared/modal";
 import { DialogDescription, DialogTitle } from "shadcn/components/ui/dialog";
 import { Label } from "shadcn/components/ui/label";
 import { Textarea } from "shadcn/components/ui/textarea";
@@ -8,9 +8,9 @@ import { Button } from "shadcn/components/ui/button";
 import { toast } from "sonner";
 import { getSession } from "next-auth/react";
 import Book, { CreateReviewData } from "@/app/models";
-import { ReviewResponse } from "@/pages/api/reviews/get_review";
 import { User } from "@prisma/client";
-import { refreshUserReviews } from "@/app/actions/refreshUserReviews";
+import { refreshUserReviews } from "@/app/actions/reviews/refreshUserReviews";
+import createReview from "@/app/actions/reviews/createReview.server";
 type args = {
   setAddReviewOpen: Dispatch<SetStateAction<boolean>>;
   addReviewOpen: boolean;
@@ -33,24 +33,19 @@ type args = {
 type createReviewProps = {
   data: CreateReviewData;
 };
-async function createReview({ data }: createReviewProps) {
-  const req = await fetch("/api/reviews/create_review", {
-    body: JSON.stringify(data),
-    method: "POST",
-  });
+async function createReviewReq({ data }: createReviewProps) {
+  const req = await createReview(data);
   console.log(req);
-  if (req.status == 202) {
-    const createdReview: {
-      id: number;
-      content: string;
-      rating: number;
-      bookId: number;
-      user: User;
-    } | null = await req.json();
-    console.log(createdReview);
-    return createdReview;
-  }
-  return null;
+
+  const createdReview: {
+    id: number;
+    content: string;
+    rating: number;
+    bookId: number;
+    user: User;
+  } | null = await req;
+  console.log(createdReview);
+  return createdReview;
 }
 export default function ReviewModalContent({
   setAddReviewOpen,
@@ -75,12 +70,10 @@ export default function ReviewModalContent({
       typeof currentSession.user.email === "string"
     ) {
       const response = await createReview({
-        data: {
-          content: text,
-          rating: rating,
-          bookId: product.id,
-          userEmail: currentSession.user.email,
-        },
+        content: text,
+        rating: rating,
+        bookId: product.id,
+        userEmail: currentSession.user.email,
       });
 
       if (response) {
@@ -88,7 +81,6 @@ export default function ReviewModalContent({
         setCanAddReview(false);
         const refreshed = await refreshUserReviews();
         setUserReviews(refreshed.user_reviews);
-        refreshReviews();
         toast("Спасибо за ваш отзыв! ❤️");
       } else {
         setAddReviewOpen(false);

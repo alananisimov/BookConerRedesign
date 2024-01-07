@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { Badge } from "shadcn/components/ui/badge";
 import Link from "next/link";
-import { book_plus_reviews } from "@/app/home/page";
+import { book_plus_reviews } from "@/app/models";
 interface props {
   book: book_plus_reviews[0];
 }
@@ -19,10 +19,12 @@ export default function HomeCard({ book }: props) {
           <Image
             src={book.image}
             alt={book.title}
-            priority={true}
-            width={"200"}
-            height={"200"}
-            className="group-hover:blur-sm z-0 h-56 w-auto"
+            priority
+            loading="eager"
+            sizes="132px"
+            width={200}
+            height={200}
+            className="group-hover:blur-sm z-0 h-56 w-auto object-cover"
           />
           <div className="mt-3">
             <Badge

@@ -1,4 +1,5 @@
-import { refreshUserReviews } from "@/app/actions/refreshUserReviews";
+import getBookById from "@/app/actions/books/getBookById.server";
+import { refreshUserReviews } from "@/app/actions/reviews/refreshUserReviews";
 import { authOptions } from "@/app/authOptions";
 import Book from "@/app/models";
 import BookView, { BookViewWrapper } from "@/components/BookView/BookView";
@@ -12,18 +13,8 @@ export default async function BookPreview({
 }: {
   params: { slug: string };
 }) {
-  let selectedBook = await prismaWithCaching.book.findFirst({
-    cacheStrategy: { ttl: 60, swr: 60 },
-    where: {
-      id: parseInt(params.slug) || 666,
-    },
-  });
-  let buyed_books: Book[] | undefined = undefined;
-
-  let user_reviews: Review[] | undefined = undefined;
-  const refreshData = await refreshUserReviews();
-  user_reviews = refreshData.user_reviews;
-  buyed_books = refreshData.buyed_books;
+  const { user_reviews, buyed_books } = await refreshUserReviews();
+  const selectedBook = await getBookById({ bookId: params.slug });
   return (
     <>
       {selectedBook ? (

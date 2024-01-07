@@ -4,7 +4,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-   
+   formats: ["image/webp"],
+   minimumCacheTTL: 31536000,
       dangerouslyAllowSVG: true,
       contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: ["lh3.googleusercontent.com", "vercel.com", "i.ibb.co", "tailwindui.com", "api.dicebear.com"],

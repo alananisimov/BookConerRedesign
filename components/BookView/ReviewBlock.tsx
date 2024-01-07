@@ -1,4 +1,4 @@
-import Book from "@/app/models";
+import Book, { ReviewResponse } from "@/app/models";
 import { cn } from "@/lib/utils";
 import { Review } from "@prisma/client";
 import { motion } from "framer-motion";
@@ -6,10 +6,10 @@ import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "shadcn/components/ui/button";
-import ReviewModalContent from "./ReviewModalContent";
+import ReviewModalContent from "./compontents/Reviews/ReviewModalContent";
 import { toast } from "sonner";
-import { ReviewResponse } from "@/pages/api/reviews/get_review";
-import { refreshUserReviews } from "@/app/actions/refreshUserReviews";
+import { refreshUserReviews } from "@/app/actions/reviews/refreshUserReviews";
+import deleteReview from "@/app/actions/reviews/deleteReview.server";
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -62,24 +62,15 @@ export default function ReviewBlock({
   const canDeleteReview = (reviewId: number) => {
     return user_reviews?.some((userReview) => userReview.id === reviewId);
   };
-  async function deleteReview(reviewId: number) {
+  async function deleteReviewReq(reviewId: number) {
     try {
-      const res = await fetch(
-        `/api/reviews/delete_review?reviewId=${reviewId}`,
-        {
-          method: "POST",
-        }
-      );
+      await deleteReview(reviewId);
       refreshReviews();
-
-      if (res.status === 202) {
-        toast("Вы успешно удалили отзыв!");
-
-        setCanAddReview(true);
-        setAddReviewOpen(false);
-      } else {
-        toast("Произошла ошибка при удалении отзыва");
-      }
+      const refreshed = await refreshUserReviews();
+      setUserReviews(refreshed.user_reviews);
+      toast("Вы успешно удалили отзыв!");
+      setCanAddReview(true);
+      setAddReviewOpen(false);
     } catch (error) {
       console.error("Error deleting review:", error);
       toast("Произошла ошибка при удалении отзыва");
@@ -139,7 +130,7 @@ export default function ReviewBlock({
                     >
                       {canDeleteReview(item.id) && (
                         <div className="absolute right-0 top-0">
-                          <Button onClick={() => deleteReview(item.id)}>
+                          <Button onClick={() => deleteReviewReq(item.id)}>
                             Удалить
                           </Button>
                         </div>

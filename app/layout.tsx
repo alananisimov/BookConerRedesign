@@ -29,9 +29,9 @@ export default async function RootLayout({
       <body className={cx(sfPro.variable, inter.variable)}>
         <div className="fixed h-screen w-full bg-gradient-to-br from-blue-50 via-white to-sky-100" />
         <Toaster />
-        <Suspense fallback="...">
-          <Nav />
-        </Suspense>
+
+        <Nav />
+
         <main className="flex min-h-screen w-full flex-col py-32 z-10">
           {children}
         </main>

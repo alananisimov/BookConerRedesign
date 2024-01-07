@@ -70,8 +70,6 @@ model Book {
   description String
   image       String
   category    String
-  rate        Int
-  count       Int
   genre       String   @default("")
   reviews     Review[]
 }

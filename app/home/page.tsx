@@ -2,64 +2,10 @@ import React from "react";
 import prisma, { prismaWithCaching } from "@/lib/prisma";
 import ModalOpen from "@/components/home/ModalButton";
 import { HomeCardLayoutWrapper } from "@/components/books/HomeCardLayout";
-export type book_plus_reviews_init = ({
-  reviews: {
-    id: number;
-    content: string;
-    rating: number;
-    bookId: number;
-    userEmail: string;
-  }[];
-} & {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-  category: string;
-  rate: number;
-  count: number;
-  genre: string;
-})[];
-export type book_plus_reviews = {
-  averageRating: number;
-  reviews: {
-    id: number;
-    content: string;
-    rating: number;
-    bookId: number;
-    userEmail: string;
-  }[];
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-  category: string;
-  rate: number;
-  count: number;
-  genre: string;
-}[];
+import getBooksFeed from "../actions/books/getBooksFeed.server";
 
 export default async function Home() {
-  const feed: book_plus_reviews_init = await prismaWithCaching.book.findMany({
-    include: {
-      reviews: true,
-    },
-    cacheStrategy: { swr: 60, ttl: 60 },
-  });
-  const updatedFeed = feed.map((book) => {
-    const totalRating = book.reviews.reduce(
-      (sum, review) => sum + review.rating,
-      0
-    );
-    const averageRating = totalRating / book.reviews.length || 0;
-
-    return {
-      ...book,
-      averageRating,
-    };
-  });
+  const updatedFeed = await getBooksFeed();
   return (
     <div className=" z-10 w-full px-6 xl:px-0 lg:max-w-screen-xl xl:mx-auto">
       <div className=" text-xl sm:text-2xl flex justify-between">
