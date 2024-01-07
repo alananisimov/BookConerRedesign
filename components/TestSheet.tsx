@@ -17,7 +17,7 @@ import TestSheetContent from "./TestSheetContent";
 import { ScrollArea } from "shadcn/components/ui/scroll-area";
 interface props {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen: (arg: boolean) => { payload: boolean; type: "filters/openCart" };
   className: string | null;
 }
 export function CartSheetWrapper({ open, setOpen, className }: props) {

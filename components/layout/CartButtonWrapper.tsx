@@ -1,10 +1,11 @@
 import store from "@/app/redux/store";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { Button } from "shadcn/components/ui/button";
 import { CartSheetWrapper } from "../TestSheet";
 import { RootState } from "@/app/redux/rootReducer";
+import { openCart } from "@/app/redux/cartStateSlice";
 
 export default function CartButtonWrapper() {
   return (
@@ -16,19 +17,26 @@ export default function CartButtonWrapper() {
 
 export function CartButton() {
   const [open, setOpen] = useState(false);
-  const cartItems = useSelector((state: RootState) => state.cart.items);
   const [isClient, setIsClient] = useState(false);
-
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartSheetWrapperOpen = useSelector(
+    (state: RootState) => state.cartState.isOpen
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
     setIsClient(true);
   }, []);
   return (
     <>
-      <CartSheetWrapper open={open} setOpen={setOpen} className={""} />
+      <CartSheetWrapper
+        open={cartSheetWrapperOpen}
+        setOpen={(arg: boolean) => dispatch(openCart(arg))}
+        className={""}
+      />
       <div className="">
         <Button
           className="pl-4 py-0 px-1.5 h-[36px] focus:outline-none focus:border-0 transition-all ease-in-out hover:scale-110 inline-block relative"
-          onClick={() => setOpen(true)}
+          onClick={() => dispatch(openCart(true))}
         >
           <div className="">
             <ShoppingCart />

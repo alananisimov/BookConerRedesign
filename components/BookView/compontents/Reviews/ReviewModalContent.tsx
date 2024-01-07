@@ -11,6 +11,7 @@ import Book, { CreateReviewData } from "@/app/models";
 import { User } from "@prisma/client";
 import { refreshUserReviews } from "@/app/actions/reviews/refreshUserReviews";
 import createReview from "@/app/actions/reviews/createReview.server";
+import { LoadingDots } from "@/components/shared/icons";
 type args = {
   setAddReviewOpen: Dispatch<SetStateAction<boolean>>;
   addReviewOpen: boolean;
@@ -57,18 +58,32 @@ export default function ReviewModalContent({
 }: args) {
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleRatingClick = (selectedRating: number) => {
     setRating(selectedRating);
   };
   const submitReview = async (event: FormEvent) => {
     event.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
+    if (rating == 0) {
+      toast("Пожалуйста укажите оценку товара");
+      return;
+    }
+    if (text == "") {
+      toast("Пожалуйста укажите текст отзыва на товар");
+      return;
+    }
     console.log("Review submitted with rating:", rating, "and text:", text);
     const currentSession = await getSession();
+
     if (
       currentSession &&
       currentSession.user &&
       typeof currentSession.user.email === "string"
     ) {
+      setIsSubmitting(true);
       const response = await createReview({
         content: text,
         rating: rating,
@@ -82,6 +97,7 @@ export default function ReviewModalContent({
         const refreshed = await refreshUserReviews();
         setUserReviews(refreshed.user_reviews);
         toast("Спасибо за ваш отзыв! ❤️");
+        setIsSubmitting(false);
       } else {
         setAddReviewOpen(false);
         setCanAddReview(true);
@@ -125,13 +141,19 @@ export default function ReviewModalContent({
               <Textarea
                 placeholder="Напишите текст отзыва тут..."
                 id="review"
-                className="w-full"
+                className="w-full p-2"
                 value={text}
+                maxLength={250}
                 onChange={handleTextChange}
               />
             </div>
-            <Button type="submit" variant={"outline"} className="mt-8">
-              Сохранить отзыв
+            <Button
+              type="submit"
+              variant={"outline"}
+              className="mt-8"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? <LoadingDots color="black" /> : "Сохранить отзыв"}
             </Button>
           </div>
         </form>

@@ -12,8 +12,7 @@ export default async function deleteReview(reviewId: number) {
     },
   });
 
-  if (reviews) {
-    kv.del(`reviews-${reviews.bookId}`);
-  }
+  kv.del(`reviews-${reviews.bookId}`);
+
   return { reviews };
 }

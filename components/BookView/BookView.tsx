@@ -37,6 +37,7 @@ import { Review } from "@prisma/client";
 import getReview from "@/app/actions/reviews/getReviews.server";
 import Breadcrumbs from "./compontents/Product/BreadCrumbs";
 import ProductInfo from "./compontents/Product/ProductInfo";
+import { openCart } from "@/app/redux/cartStateSlice";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -117,12 +118,6 @@ export default function BookView({
   const [isLoading, setLoading] = useState(Boolean);
   return (
     <div className="">
-      <CartSheetWrapper
-        open={isCartOpen}
-        setOpen={setIsCartOpen}
-        className={""}
-      />
-
       <div className="">
         <Breadcrumbs
           breadcrumbs={product_data.breadcrumbs_data}
@@ -161,7 +156,7 @@ export default function BookView({
                   dispatch(
                     addItem({ itemId: product.id.toString(), book: product })
                   );
-                  setIsCartOpen(true);
+                  dispatch(openCart(true));
                   setLoading(true);
                   setTimeout(() => setLoading(false), 1000);
                 }}
