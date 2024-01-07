@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import useMediaQuery from "@/lib/hooks/use-media-query";
@@ -9,12 +9,10 @@ import store, { persistor } from "@/app/redux/store";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { RootState } from "@/app/redux/rootReducer";
-import { Button } from "@chakra-ui/react";
-import { addItem, removeItem, clearCart } from "@/app/redux/cartSlice";
-import Image from "next/image";
-import Link from "next/link";
 import TestSheetContent from "./TestSheetContent";
 import { ScrollArea } from "shadcn/components/ui/scroll-area";
+import { LoadingDots } from "./shared/icons";
+import { useRouter } from "next/navigation";
 interface props {
   open: boolean;
   setOpen: (arg: boolean) => { payload: boolean; type: "filters/openCart" };
@@ -31,7 +29,8 @@ export function CartSheetWrapper({ open, setOpen, className }: props) {
 }
 export default function CartSheet({ open, setOpen, className }: props) {
   const { isMobile } = useMediaQuery();
-  const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalAmount = Object.keys(cartItems).reduce(
     (accumulator, product_key) => {
@@ -42,6 +41,17 @@ export default function CartSheet({ open, setOpen, className }: props) {
     },
     0
   );
+  function handleCheckout() {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    router.push("/checkout");
+    setOpen(false);
+  }
+  const checkout_btn_cn = isLoading
+    ? "cursor-not-allowed h-12 w-full relative flex items-center justify-center rounded-full bg-blue-600 p-3 tracking-wide text-white"
+    : "h-12 w-full relative flex items-center justify-center rounded-full bg-blue-600 p-3 tracking-wide text-white";
   if (isMobile) {
     return (
       <Drawer.Root open={open} onOpenChange={setOpen}>
@@ -78,8 +88,15 @@ export default function CartSheet({ open, setOpen, className }: props) {
                     </div>
                   </div>
                   <div className=" w-full">
-                    <button className="w-full relative flex items-center justify-center rounded-full bg-blue-600 p-3 tracking-wide text-white">
-                      Продолжить оформление
+                    <button
+                      onClick={handleCheckout}
+                      className={checkout_btn_cn}
+                    >
+                      {isLoading ? (
+                        <LoadingDots color="#FFF" />
+                      ) : (
+                        "Продолжить оформление"
+                      )}
                     </button>
                   </div>
                 </div>
@@ -164,8 +181,17 @@ export default function CartSheet({ open, setOpen, className }: props) {
                         </div>
                       </div>
                       <div className="absolute bottom-0 w-full right-0 px-6">
-                        <button className="w-full relative flex items-center justify-center rounded-full bg-blue-600 p-3 tracking-wide text-white">
-                          Продолжить оформление
+                        <button
+                          onClick={
+                            isLoading == false ? handleCheckout : () => {}
+                          }
+                          className={checkout_btn_cn}
+                        >
+                          {isLoading ? (
+                            <LoadingDots color="#FFF" />
+                          ) : (
+                            "Продолжить оформление"
+                          )}
                         </button>
                       </div>
                     </div>

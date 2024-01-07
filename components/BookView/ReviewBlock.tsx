@@ -89,7 +89,9 @@ export default function ReviewBlock({
       {reviews !== undefined &&
         (!reviews.reviews.length ? (
           <div className="px-6">
-            <h1 className="text-2xl font-medium">Пока что отзывов нет 😔</h1>
+            <h1 className="text-2xl font-medium" id="reviews_block">
+              Пока что отзывов нет 😔
+            </h1>
             <p>Мы надеемся что вы станете первым покупетелем данной книги!</p>
             {canAddReview && (
               <motion.div className="item" variants={item_style}>
@@ -109,7 +111,7 @@ export default function ReviewBlock({
             )}
           </div>
         ) : (
-          <div className=" h-full w-full">
+          <div className=" h-full w-full" id="reviews_block">
             <h1 className="m-4 font-medium text-xl">Все отзывы</h1>
             <motion.div
               className=" "

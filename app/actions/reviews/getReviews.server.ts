@@ -5,14 +5,6 @@ import { User } from "@prisma/client";
 import { kv } from "@vercel/kv";
 
 export default async function getReview(bookId: number) {
-  const cacheKey = `reviews-${bookId}`;
-
-  const cachedData: ReviewResponse | null = await kv.get(cacheKey);
-
-  if (cachedData) {
-    return cachedData;
-  }
-
   const reviews = await prismaWithCaching.review.findMany({
     include: {
       user: true,
@@ -31,8 +23,6 @@ export default async function getReview(bookId: number) {
     totalCount: totalCount,
     averageRating: averageRating,
   };
-
-  await kv.set(cacheKey, JSON.stringify(response));
 
   return response;
 }

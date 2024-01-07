@@ -4,7 +4,6 @@ import { ReactNode } from "react";
 import DescriptionDetails from "./DescriptionDetails";
 import AddToCartButton from "./AddToCartButton";
 
-// ProductInfo.tsx
 interface ProductInfoProps {
   price: string;
   reviews: { href: string; average: number; totalCount: number };
@@ -25,11 +24,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   onAddButtonClick,
 }) => (
   <div className="mt-4 lg:row-span-3 lg:mt-0">
-    <h2 className="sr-only">Product information</h2>
+    <h2 className="sr-only">Информация о продукте</h2>
     <p className="text-3xl tracking-tight text-gray-900">{price} RUB</p>
 
     <div className="mt-6">
-      <h3 className="sr-only">Reviews</h3>
+      <h3 className="sr-only">Отзывы</h3>
       <div className="flex items-center">
         <div className="flex items-center">
           {[0, 1, 2, 3, 4].map((rating) => (
@@ -43,7 +42,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
             />
           ))}
         </div>
-        <p className="sr-only">{reviews.average} out of 5 stars</p>
+        <p className="sr-only">{reviews.average} из 5 звезд</p>
         <a
           href={reviews.href}
           className="ml-3 text-sm font-medium text-blue-600 hover:text-blue-500"

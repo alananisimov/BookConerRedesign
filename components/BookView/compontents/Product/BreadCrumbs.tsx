@@ -1,14 +1,17 @@
 // Breadcrumbs.tsx
+import Link from "next/link";
 import Breadcrumb from "./BreadCrumb";
 
 interface BreadcrumbsProps {
   breadcrumbs: { id: number; name: string; href: string }[];
   productName: string;
+  productId: number;
 }
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   breadcrumbs,
   productName,
+  productId,
 }) => (
   <nav aria-label="Breadcrumb">
     <ol
@@ -19,13 +22,13 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
         <Breadcrumb key={breadcrumb.id} breadcrumb={breadcrumb} />
       ))}
       <li className="text-sm">
-        <a
-          href={`/books/${productName}`}
+        <Link
+          href={`/books/${productId}`}
           aria-current="page"
           className="font-medium text-gray-500 hover:text-gray-600 line-clamp-1"
         >
           {productName}
-        </a>
+        </Link>
       </li>
     </ol>
   </nav>

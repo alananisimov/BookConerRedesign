@@ -29,7 +29,6 @@ export async function refreshUserReviews() {
 
   const buyed_books = user_req?.Book;
   const user_reviews = user_reviews_req;
-
   console.log("refreshed");
   return { user_reviews, buyed_books };
 }

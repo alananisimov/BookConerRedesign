@@ -21,16 +21,12 @@
 */
 "use client";
 import { useEffect, useState } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
 import Book, { ReviewResponse } from "@/app/models";
 import Image from "next/image";
 import { useDispatch, Provider } from "react-redux";
 import store, { persistor } from "@/app/redux/store";
 import { addItem } from "@/app/redux/cartSlice";
 import { PersistGate } from "redux-persist/integration/react";
-import Link from "next/link";
-import { CartSheetWrapper } from "../TestSheet";
-import { LoadingDots } from "../shared/icons";
 import { Toaster } from "sonner";
 import ReviewBlock from "./ReviewBlock";
 import { Review } from "@prisma/client";
@@ -38,9 +34,7 @@ import getReview from "@/app/actions/reviews/getReviews.server";
 import Breadcrumbs from "./compontents/Product/BreadCrumbs";
 import ProductInfo from "./compontents/Product/ProductInfo";
 import { openCart } from "@/app/redux/cartStateSlice";
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+
 interface props {
   product: Book;
   buyed_books: Book[] | undefined;
@@ -61,10 +55,6 @@ export function BookViewWrapper({ product, buyed_books, user_reviews }: props) {
     </Provider>
   );
 }
-async function fetchReviews({ product_id }: { product_id: number }) {
-  const data = await getReview(product_id);
-  return data;
-}
 
 export default function BookView({
   product,
@@ -75,19 +65,22 @@ export default function BookView({
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [canAddReview, setCanAddReview] = useState(false);
   const [userReviewsData, setUserReviewsData] = useState(user_reviews);
+  const [isLoading, setLoading] = useState(Boolean);
+  const dispatch = useDispatch();
+
   async function refreshReviewsData() {
-    const newReviews = await fetchReviews({ product_id: product.id });
-    setReviewsData(newReviews);
+    const data = await getReview(product.id);
+    setReviewsData(data);
   }
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     refreshReviewsData();
     if (buyed_books) {
       const hasReviewInThisBook = userReviewsData?.some(
         (review) => review.bookId === product.id
       );
       setCanAddReview(
-        (buyed_books?.some((book) => book.id === product.id) &&
+        (buyed_books?.some((buyed_book) => buyed_book.id === product.id) &&
           !hasReviewInThisBook) ||
           false
       );
@@ -108,20 +101,18 @@ export default function BookView({
     description: product.description,
   };
   const reviews = {
-    href: "#",
+    href: "#reviews_block",
     average: reviews_data?.averageRating ? reviews_data.averageRating : 0,
     totalCount: reviews_data?.totalCount ? reviews_data.totalCount : 0,
   };
 
-  const dispatch = useDispatch();
-
-  const [isLoading, setLoading] = useState(Boolean);
   return (
     <div className="">
       <div className="">
         <Breadcrumbs
           breadcrumbs={product_data.breadcrumbs_data}
           productName={product_data.name}
+          productId={product.id}
         />
 
         <div className="flex flex-col">
@@ -134,8 +125,6 @@ export default function BookView({
                   className="h-full w-full object-cover object-center"
                   width={400}
                   height={500}
-                  blurDataURL="URL"
-                  placeholder="blur"
                 />
               </div>
             </div>

@@ -13,8 +13,6 @@ interface props {
 }
 
 export default function HomeCard({ book }: props) {
-  const [isLoaded, setLoaded] = useState(Boolean);
-  const [isIntersecting, setIntersecting] = useState(false);
   return (
     <Link href={`/books/${book.id}`}>
       <Card className={" hover:scale-105 transition-all"}>
@@ -27,7 +25,6 @@ export default function HomeCard({ book }: props) {
             sizes="132px"
             width={200}
             height={200}
-            onLoadedData={() => setLoaded(true)}
             className=" z-0 h-56 w-auto object-cover"
           />
 
