@@ -1,5 +1,5 @@
 "use server";
-import { prismaWithCaching } from "../../../lib/prisma";
+import { prismaWithCaching } from "../../lib/prisma";
 import { book_plus_reviews_init } from "@/app/models";
 
 export default async function getBooksFeed() {

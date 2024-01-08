@@ -1,6 +1,6 @@
 import React from "react";
-import ModalOpen from "@/components/home/ModalButton";
-import { HomeCardLayoutWrapper } from "@/components/books/HomeCardLayout";
+import ModalOpen from "shared/ui/Home/ModalButton";
+import { HomeCardLayoutWrapper } from "widgets/Home/HomeCardLayout";
 import getBooksFeed from "../actions/books/getBooksFeed.server";
 
 export default async function Home() {

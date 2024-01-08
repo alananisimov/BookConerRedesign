@@ -1,5 +1,5 @@
 "use server";
-import prisma from "../../../lib/prisma";
+import prisma from "../../lib/prisma";
 import { CreateReviewData } from "@/app/models";
 import { kv } from "@vercel/kv";
 

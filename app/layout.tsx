@@ -2,11 +2,11 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import cx from "classnames";
 import { sfPro, inter } from "./fonts";
-import Nav from "@/components/layout/nav";
-import Footer from "@/components/layout/footer";
+import Nav from "entities/Layout/nav";
+import Footer from "entities/Layout/footer";
 import { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
-import { LoadingCircle } from "@/components/shared/icons";
+import { LoadingCircle } from "shared/icons";
 
 export const metadata: Metadata = {
   title: "Книжный уголок - Самый уютный магазин книг",

@@ -1,5 +1,5 @@
 "use server";
-import prisma, { prismaWithCaching } from "../../../lib/prisma";
+import prisma, { prismaWithCaching } from "../../lib/prisma";
 import { ApiError } from "@/app/models";
 import { kv } from "@vercel/kv";
 

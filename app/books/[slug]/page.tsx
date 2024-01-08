@@ -1,13 +1,7 @@
 import getBookById from "@/app/actions/books/getBookById.server";
 import { refreshUserReviews } from "@/app/actions/reviews/refreshUserReviews";
-import { authOptions } from "@/app/authOptions";
-import Book from "@/app/models";
-import BookView, { BookViewWrapper } from "@/components/BookView/BookView";
-import NoBooks from "@/components/books/NoBooks";
-import prisma, { prismaWithCaching } from "@/lib/prisma";
-import { Review } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
+import { BookViewWrapper } from "entities/Product/BookView";
+import NoBooks from "shared/ui/Home/NoBooks";
 export default async function BookPreview({
   params,
 }: {

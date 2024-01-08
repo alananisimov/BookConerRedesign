@@ -1,5 +1,5 @@
 "use server";
-import { prismaWithCaching } from "../../../lib/prisma";
+import { prismaWithCaching } from "../../lib/prisma";
 
 export default async function getBookById({ bookId }: { bookId: string }) {
   let selectedBook = await prismaWithCaching.book.findFirst({

@@ -1,6 +1,6 @@
 // Import necessary modules
 "use server";
-import { prismaWithCaching } from "../../../lib/prisma";
+import { prismaWithCaching } from "../../lib/prisma";
 import { ApiError, CreateReviewData } from "@/app/models";
 import { kv } from "@vercel/kv";
 

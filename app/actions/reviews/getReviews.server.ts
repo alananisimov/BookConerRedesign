@@ -1,8 +1,6 @@
 "use server";
-import prisma, { prismaWithCaching } from "../../../lib/prisma";
-import { ApiError, ReviewResponse } from "@/app/models";
-import { User } from "@prisma/client";
-import { kv } from "@vercel/kv";
+import { prismaWithCaching } from "../../lib/prisma";
+import { ReviewResponse } from "@/app/models";
 
 export default async function getReview(bookId: number) {
   const reviews = await prismaWithCaching.review.findMany({

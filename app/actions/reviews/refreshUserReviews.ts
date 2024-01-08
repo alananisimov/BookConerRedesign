@@ -1,6 +1,6 @@
 "use server";
-import { authOptions } from "@/app/authOptions";
-import { prismaWithCaching } from "@/lib/prisma";
+import { authOptions } from "@/app/lib/configuration";
+import { prismaWithCaching } from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 
 export async function refreshUserReviews() {
