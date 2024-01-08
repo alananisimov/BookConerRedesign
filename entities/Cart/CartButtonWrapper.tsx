@@ -35,11 +35,12 @@ export function CartButton() {
       />
       <div className="">
         <Button
-          className="pl-4 py-0 px-1.5 h-[36px] focus:outline-none focus:border-0 transition-all ease-in-out hover:scale-110 inline-block relative"
+          className="hover:bg-transparent pl-4 py-0 px-1.5 h-[36px] focus:outline-none focus:border-0 transition-all ease-in-out hover:scale-110 inline-block relative"
+          variant={"ghost"}
           onClick={() => dispatch(openCart(true))}
         >
           <div className="">
-            <ShoppingCart />
+            <ShoppingCart color="black" />
             {isClient && Object.keys(cartItems).length !== 0 && (
               <span className="absolute top-0 end-0 flex h-2.5 w-2.5 rounded-full ring-white bg-teal-400"></span>
             )}

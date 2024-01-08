@@ -1,14 +1,14 @@
 "use server";
-import { prismaWithCaching } from "../../lib/prisma";
+import prisma, { prismaWithCaching } from "../../lib/prisma";
 import { book_plus_reviews_init } from "@/app/models";
 
 export default async function getBooksFeed() {
-  const feed: book_plus_reviews_init = await prismaWithCaching.book.findMany({
+  const feed: book_plus_reviews_init = await prisma.book.findMany({
     include: {
       reviews: true,
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
   });
+  console.log(feed);
   const updatedFeed = feed.map((book) => {
     const totalRating = book.reviews.reduce(
       (sum, review) => sum + review.rating,

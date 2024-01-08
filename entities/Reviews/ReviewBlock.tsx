@@ -132,7 +132,10 @@ export default function ReviewBlock({
                     >
                       {canDeleteReview(item.id) && (
                         <div className="absolute right-0 top-0">
-                          <Button onClick={() => deleteReviewReq(item.id)}>
+                          <Button
+                            onClick={() => deleteReviewReq(item.id)}
+                            variant={"ghost"}
+                          >
                             Удалить
                           </Button>
                         </div>

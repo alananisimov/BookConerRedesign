@@ -1,20 +1,19 @@
 "use server";
 import prisma from "../../lib/prisma";
-import { CreateReviewData } from "@/app/models";
+import { CreateBookData, CreateReviewData } from "@/app/models";
 import { kv } from "@vercel/kv";
 
-// Server component
-export default async function createBook(data: CreateReviewData) {
-  const { content, rating, userEmail, bookId } = data;
+export default async function createBook(data: CreateBookData) {
+  const { description, title, price, image, genre, category } = data;
 
-  console.log(content);
-  kv.del(`reviews-${bookId}`);
-  const createReview = await prisma.review.create({
+  const createReview = await prisma.book.create({
     data: {
-      content: content,
-      rating: rating,
-      userEmail: userEmail,
-      bookId: bookId,
+      description,
+      title,
+      price,
+      image,
+      genre,
+      category,
     },
     include: {
       user: true,

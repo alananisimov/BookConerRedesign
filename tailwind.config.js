@@ -6,6 +6,12 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './widgets/**/*.{ts,tsx}',
+    './shadcn/**/*.{ts,tsx}',
+    './entities/**/*.{ts,tsx}',
+    './shared/**/*.{ts,tsx}',
+    './shadcn/**/*.{ts,tsx}'
+    
   ],
   prefix: "",
   theme: {

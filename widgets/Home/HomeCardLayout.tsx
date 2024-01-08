@@ -5,6 +5,11 @@ import { Provider, useSelector } from "react-redux";
 import { RootState } from "@/app/store/rootReducer";
 import store from "@/app/store/store";
 import { book_plus_reviews } from "@/app/models";
+import AdminHomeCard from "./Admin/AdminHomeCard";
+import getUserRole from "@/app/actions/users/getUserRole";
+import { getSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import getBooksFeed from "@/app/actions/books/getBooksFeed.server";
 interface args {
   feed: book_plus_reviews;
 }
@@ -23,15 +28,44 @@ export function HomeCardLayoutWrapper({ feed }: args) {
   );
 }
 export default function HomeCardLayout({ feed }: args) {
+  const [updatedFeed, setUpdatedFeed] = useState(feed);
   const filters = useSelector((state: RootState) => state.filter.items);
-  const filteredBooks: book_plus_reviews = feed.filter((book) =>
+  const filteredBooks: book_plus_reviews = updatedFeed.filter((book) =>
     filters.includes(book.genre)
   );
+  const [isAdmin, setAdmin] = useState(false);
+  async function getRole() {
+    const ses = await getSession();
+    if (!ses || !ses.user || !ses.user.email) {
+      setAdmin(false);
+    } else {
+      const currentRole = await getUserRole(ses.user.email);
+      console.log(currentRole);
+      setAdmin(currentRole === "Admin" ? true : false);
+    }
+  }
+  async function updateFeed() {
+    const new_feed = await getBooksFeed();
+    setUpdatedFeed(new_feed);
+  }
+  useEffect(() => {
+    getRole();
+    updateFeed();
+
+    console.log(filteredBooks, feed);
+  }, []);
+
   return (
     <>
       <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-16 gap-6 mt-4">
-        {filteredBooks.length > 0 &&
-          filteredBooks.map((book) => <HomeCard book={book} key={book.id} />)}
+        {filteredBooks.length > 0 && (
+          <>
+            {filteredBooks.map((book) => (
+              <HomeCard book={book} key={book.id} />
+            ))}
+            {isAdmin && <AdminHomeCard />}
+          </>
+        )}
       </div>
       {filteredBooks.length === 0 && (
         <div className="h-full">

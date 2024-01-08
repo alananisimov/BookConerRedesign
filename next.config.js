@@ -8,7 +8,7 @@ const nextConfig = {
    minimumCacheTTL: 31536000,
       dangerouslyAllowSVG: true,
       contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    domains: ["lh3.googleusercontent.com", "vercel.com", "i.ibb.co", "tailwindui.com", "api.dicebear.com"],
+    domains: ["m8q0hkg7wgvjofbx.public.blob.vercel-storage.com","lh3.googleusercontent.com", "vercel.com", "i.ibb.co", "tailwindui.com", "api.dicebear.com"],
   },
  
   async redirects() {

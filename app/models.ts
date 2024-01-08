@@ -27,7 +27,14 @@ export type CreateReviewData = {
   userEmail: string;
   bookId: number;
 };
-
+export type CreateBookData = {
+  description: string;
+  title: string;
+  price: number;
+  image: string;
+  category: string;
+  genre: string;
+};
 export type AddBuyedBookData = {
   Book: Book;
   userId: string;

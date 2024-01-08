@@ -25,7 +25,7 @@ export default function HomeCard({ book }: props) {
             sizes="132px"
             width={200}
             height={200}
-            className=" z-0 h-56 w-auto object-cover"
+            className=" z-0 h-56 w-auto object-cover rounded-md mt-2"
           />
 
           <div className="mt-3">
