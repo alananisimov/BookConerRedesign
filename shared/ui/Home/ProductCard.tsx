@@ -29,7 +29,7 @@ export default function HomeCard({ book, isAdmin }: props) {
   }
 
   return (
-    <Link href={`/books/${book.id}`}>
+    <Link href={`/books/${book.title}`}>
       <Card className={" hover:scale-105 transition-all overflow-hidden"}>
         <CardContent className="grid">
           <Image

@@ -66,6 +66,7 @@ export default function ReviewBlock({
     try {
       await deleteReview(reviewId);
       refreshReviews();
+
       const refreshed = await refreshUserReviews();
       setUserReviews(refreshed.user_reviews);
       toast("Вы успешно удалили отзыв!");

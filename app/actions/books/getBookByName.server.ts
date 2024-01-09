@@ -1,14 +1,17 @@
 "use server";
 import { prismaWithCaching } from "../../lib/prisma";
 
-export default async function getBookById({ bookId }: { bookId: string }) {
+export default async function getBookByName({
+  bookName,
+}: {
+  bookName: string;
+}) {
   let selectedBook = await prismaWithCaching.book.findFirst({
     include: {
       reviews: true,
     },
-    cacheStrategy: { ttl: 60, swr: 60 },
     where: {
-      id: bookId || "666",
+      title: decodeURIComponent(bookName) || "666",
     },
   });
   return selectedBook;

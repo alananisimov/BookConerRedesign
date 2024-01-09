@@ -1,4 +1,4 @@
-import getBookById from "@/app/actions/books/getBookById.server";
+import getBookById from "@/app/actions/books/getBookByName.server";
 import { refreshUserReviews } from "@/app/actions/reviews/refreshUserReviews";
 import { BookViewWrapper } from "entities/Product/BookView";
 import NoBooks from "shared/ui/Home/NoBooks";
@@ -8,7 +8,7 @@ export default async function BookPreview({
   params: { slug: string };
 }) {
   const { user_reviews, buyed_books } = await refreshUserReviews();
-  const selectedBook = await getBookById({ bookId: params.slug });
+  const selectedBook = await getBookById({ bookName: params.slug });
   return (
     <>
       {selectedBook ? (

@@ -7,7 +7,6 @@ import { kv } from "@vercel/kv";
 export default async function createReview(data: CreateReviewData) {
   const { content, rating, userEmail, bookId } = data;
 
-  console.log(content);
   kv.del(`reviews-${bookId}`);
   const createReview = await prismaWithCaching.review.create({
     data: {

@@ -112,7 +112,7 @@ export default function BookView({
         <Breadcrumbs
           breadcrumbs={product_data.breadcrumbs_data}
           productName={product_data.name}
-          productId={product.id}
+          productId={product.title}
         />
 
         <div className="flex flex-col">

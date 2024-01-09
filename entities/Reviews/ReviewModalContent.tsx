@@ -8,7 +8,6 @@ import { Button } from "shadcn/components/ui/button";
 import { toast } from "sonner";
 import { getSession } from "next-auth/react";
 import Book, { CreateReviewData } from "@/app/models";
-import { User } from "@prisma/client";
 import { refreshUserReviews } from "@/app/actions/reviews/refreshUserReviews";
 import createReview from "@/app/actions/reviews/createReview.server";
 import { LoadingDots } from "shared/icons";
@@ -31,23 +30,6 @@ type args = {
   setCanAddReview: Dispatch<SetStateAction<boolean>>;
   refreshReviews: () => Promise<void>;
 };
-type createReviewProps = {
-  data: CreateReviewData;
-};
-async function createReviewReq({ data }: createReviewProps) {
-  const req = await createReview(data);
-  console.log(req);
-
-  const createdReview: {
-    id: number;
-    content: string;
-    rating: number;
-    bookId: string;
-    user: User;
-  } | null = await req;
-  console.log(createdReview);
-  return createdReview;
-}
 export default function ReviewModalContent({
   setAddReviewOpen,
   addReviewOpen,
@@ -93,6 +75,7 @@ export default function ReviewModalContent({
         setAddReviewOpen(false);
         setCanAddReview(false);
         const refreshed = await refreshUserReviews();
+        refreshReviews();
         setUserReviews(refreshed.user_reviews);
         toast("Спасибо за ваш отзыв! ❤️");
         setIsSubmitting(false);

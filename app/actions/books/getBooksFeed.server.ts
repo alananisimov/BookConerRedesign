@@ -8,7 +8,6 @@ export default async function getBooksFeed() {
       reviews: true,
     },
   });
-  console.log(feed);
   const updatedFeed = feed.map((book) => {
     const totalRating = book.reviews.reduce(
       (sum, review) => sum + review.rating,
