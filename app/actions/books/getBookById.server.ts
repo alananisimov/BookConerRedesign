@@ -8,7 +8,7 @@ export default async function getBookById({ bookId }: { bookId: string }) {
     },
     cacheStrategy: { ttl: 60, swr: 60 },
     where: {
-      id: parseInt(bookId) || 666,
+      id: bookId || "666",
     },
   });
   return selectedBook;

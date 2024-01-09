@@ -8,14 +8,29 @@ import { Badge } from "shadcn/components/ui/badge";
 import Link from "next/link";
 import { book_plus_reviews } from "@/app/models";
 import React from "react";
+import { Button } from "shadcn/components/ui/button";
+import deleteBook from "@/app/actions/books/deleteBook.server";
+import { toast } from "sonner";
+import { del } from "@vercel/blob";
 interface props {
   book: book_plus_reviews[0];
+  isAdmin: boolean;
 }
 
-export default function HomeCard({ book }: props) {
+export default function HomeCard({ book, isAdmin }: props) {
+  async function deleteBookReq() {
+    const req = await deleteBook(book.id);
+    if (req) {
+      del(req.image, {
+        token: "vercel_blob_rw_M8q0hKg7wGVJOfBX_y1xXDaixXou8Sj0BU3kBA8tewNurTL",
+      });
+      toast(`Вы успешно удалили книгу ${req.title}`);
+    }
+  }
+
   return (
     <Link href={`/books/${book.id}`}>
-      <Card className={" hover:scale-105 transition-all"}>
+      <Card className={" hover:scale-105 transition-all overflow-hidden"}>
         <CardContent className="grid">
           <Image
             src={book.image}
@@ -46,7 +61,7 @@ export default function HomeCard({ book }: props) {
 
             <div className="mt-2 flex gap-x-2">
               {book.averageRating > 0 && (
-                <div className="inline-flex">
+                <div className="inline-flex my-auto">
                   {Array(Math.round(book.averageRating))
                     .fill("")
                     .map((_, i) => (
@@ -61,6 +76,19 @@ export default function HomeCard({ book }: props) {
                   : book.reviews.length >= 5
                     ? "отзывов"
                     : "отзыва"}
+              </div>
+              <div className="ml-auto">
+                {isAdmin && (
+                  <Link href={"#"}>
+                    <Button
+                      variant={"outline"}
+                      className=""
+                      onClick={() => deleteBookReq()}
+                    >
+                      Удалить
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

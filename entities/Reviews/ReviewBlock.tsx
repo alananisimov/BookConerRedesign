@@ -39,7 +39,7 @@ interface args {
           id: number;
           content: string;
           rating: number;
-          bookId: number;
+          bookId: string;
           userEmail: string;
         }[]
       | undefined

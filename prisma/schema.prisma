@@ -65,7 +65,7 @@ model VerificationToken {
 
 model Book {
   user        User[]
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   title       String
   price       Int
   description String
@@ -79,7 +79,7 @@ model Review {
   id        Int    @id @default(autoincrement())
   content   String
   rating    Int
-  bookId    Int
+  bookId    String
   book      Book   @relation(fields: [bookId], references: [id])
   userEmail String
   user      User   @relation(fields: [userEmail], references: [email])

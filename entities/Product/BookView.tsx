@@ -153,7 +153,7 @@ export default function BookView({
               />
             </div>
           </div>
-          <div className=" lg:max-w-5xl mx-auto w-full">
+          <div className=" lg:max-w-6xl mx-auto w-full">
             <ReviewBlock
               user_reviews={userReviewsData}
               reviews={reviews_data}

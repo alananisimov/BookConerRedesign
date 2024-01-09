@@ -1,13 +1,11 @@
 "use client";
 import HomeCard from "../../shared/ui/Home/ProductCard";
-import { motion } from "framer-motion";
 import { Provider, useSelector } from "react-redux";
 import { RootState } from "@/app/store/rootReducer";
 import store from "@/app/store/store";
 import { book_plus_reviews } from "@/app/models";
 import AdminHomeCard from "./Admin/AdminHomeCard";
 import getUserRole from "@/app/actions/users/getUserRole";
-import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import getBooksFeed from "@/app/actions/books/getBooksFeed.server";
 interface args {
@@ -33,26 +31,19 @@ export default function HomeCardLayout({ feed }: args) {
   const filteredBooks: book_plus_reviews = updatedFeed.filter((book) =>
     filters.includes(book.genre)
   );
+
   const [isAdmin, setAdmin] = useState(false);
   async function getRole() {
-    const ses = await getSession();
-    if (!ses || !ses.user || !ses.user.email) {
-      setAdmin(false);
-    } else {
-      const currentRole = await getUserRole(ses.user.email);
-      console.log(currentRole);
-      setAdmin(currentRole === "Admin" ? true : false);
-    }
+    const currentRole = await getUserRole();
+    console.log(filteredBooks);
+    setAdmin(true);
   }
   async function updateFeed() {
-    const new_feed = await getBooksFeed();
-    setUpdatedFeed(new_feed);
+    setUpdatedFeed(await getBooksFeed());
   }
   useEffect(() => {
     getRole();
     updateFeed();
-
-    console.log(filteredBooks, feed);
   }, []);
 
   return (
@@ -61,11 +52,11 @@ export default function HomeCardLayout({ feed }: args) {
         {filteredBooks.length > 0 && (
           <>
             {filteredBooks.map((book) => (
-              <HomeCard book={book} key={book.id} />
+              <HomeCard book={book} key={book.id} isAdmin={isAdmin} />
             ))}
-            {isAdmin && <AdminHomeCard />}
           </>
         )}
+        {isAdmin && <AdminHomeCard updateFeed={updateFeed} />}
       </div>
       {filteredBooks.length === 0 && (
         <div className="h-full">

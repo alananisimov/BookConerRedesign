@@ -17,7 +17,11 @@ import { toast } from "sonner";
 import { Dispatch } from "@reduxjs/toolkit";
 import { book_plus_reviews } from "@/app/models";
 
-export default function AdminHomeCard() {
+type args = {
+  updateFeed: () => Promise<void>;
+};
+
+export default function AdminHomeCard({ updateFeed }: args) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const [formValues, setFormValues] = useState({
@@ -29,9 +33,12 @@ export default function AdminHomeCard() {
   });
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormValues((prevValues) => ({
       ...prevValues,
       [name]: value,
@@ -61,11 +68,20 @@ export default function AdminHomeCard() {
 
     console.log(res);
     if (res) {
+      updateFeed();
       toast("Вы добавили книгу");
     }
   }
+  const genres = [
+    "romantic",
+    "fantasy",
+    "true-crime",
+    "science-fiction",
+    "dystopie",
+    "thriller",
+  ];
   return (
-    <Card className={" "}>
+    <Card className={" overflow-hidden "}>
       <form onSubmit={submitForm} id="form_id">
         <CardContent className="grid">
           <div className="hover:scale-105 transition-all z-0 max-h-40 mt-6 rounded-lg border border-dashed border-gray-900/25 px-6 py-3">
@@ -105,28 +121,36 @@ export default function AdminHomeCard() {
           <div className="mt-3">
             <div className="flex flex-col xl:flex-row gap-3 ">
               <Badge
-                className="text-xs font-semibold px-2.5 py-0.5"
+                className="text-xs font-semibold px-2.5 py-0.5 w-full max-w-32"
                 variant={"outline"}
               >
-                <input
-                  placeholder="Категория"
+                <select
                   required
                   name="category"
                   onChange={handleInputChange}
                   className="focus:border-border focus:ring-0 focus:outline-none"
-                />
+                  defaultValue={"Категория"}
+                >
+                  <option disabled>Категория</option>
+                  <option>Книги</option>
+                </select>
               </Badge>
               <Badge
-                className="text-xs font-semibold px-2.5 py-0.5"
+                className="text-xs font-semibold px-2.5 py-0.5 w-full max-w-32"
                 variant={"outline"}
               >
-                <input
-                  placeholder="Жанр"
+                <select
                   required
-                  onChange={handleInputChange}
                   name="genre"
+                  onChange={handleInputChange}
                   className="focus:border-border focus:ring-0 focus:outline-none"
-                />
+                  defaultValue={"Жанр"}
+                >
+                  <option disabled>Жанр</option>
+                  {genres.map((el) => (
+                    <option key={el}>{el}</option>
+                  ))}
+                </select>
               </Badge>
             </div>
             <div className="my-2 font-semibold leading-tight text-ellipsis text-wrap line-clamp-1 break-words">

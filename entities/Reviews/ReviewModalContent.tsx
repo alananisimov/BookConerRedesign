@@ -22,7 +22,7 @@ type args = {
           id: number;
           content: string;
           rating: number;
-          bookId: number;
+          bookId: string;
           userEmail: string;
         }[]
       | undefined
@@ -42,7 +42,7 @@ async function createReviewReq({ data }: createReviewProps) {
     id: number;
     content: string;
     rating: number;
-    bookId: number;
+    bookId: string;
     user: User;
   } | null = await req;
   console.log(createdReview);

@@ -1,7 +1,7 @@
 import { User } from "next-auth";
 
 export default interface Book {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;
@@ -10,10 +10,10 @@ export default interface Book {
   genre: string;
 }
 export type Review = {
-  id: number;
+  id: string;
   content: string;
   rating: number;
-  bookId: number;
+  bookId: string;
   book: Book;
   userId: string;
   user: User;
@@ -25,7 +25,7 @@ export type CreateReviewData = {
   content: string;
   rating: number;
   userEmail: string;
-  bookId: number;
+  bookId: string;
 };
 export type CreateBookData = {
   description: string;
@@ -45,7 +45,7 @@ export interface ReviewResponse {
         id: number;
         content: string;
         rating: number;
-        bookId: number;
+        bookId: string;
         user: User;
       }[]
     | [];
@@ -56,7 +56,7 @@ export interface ReviewWithUser {
   id: number;
   content: string;
   rating: number;
-  bookId: number;
+  bookId: string;
   user: User;
 }
 export type book_plus_reviews_init = ({
@@ -64,11 +64,11 @@ export type book_plus_reviews_init = ({
     id: number;
     content: string;
     rating: number;
-    bookId: number;
+    bookId: string;
     userEmail: string;
   }[];
 } & {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;
@@ -82,10 +82,10 @@ export type book_plus_reviews = {
     id: number;
     content: string;
     rating: number;
-    bookId: number;
+    bookId: string;
     userEmail: string;
   }[];
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;

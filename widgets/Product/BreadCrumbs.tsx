@@ -5,7 +5,7 @@ import Breadcrumb from "../../shared/ui/ProductView/BreadCrumb";
 interface BreadcrumbsProps {
   breadcrumbs: { id: number; name: string; href: string }[];
   productName: string;
-  productId: number;
+  productId: string;
 }
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({

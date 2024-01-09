@@ -2,7 +2,7 @@
 import { prismaWithCaching } from "../../lib/prisma";
 import { ReviewResponse } from "@/app/models";
 
-export default async function getReview(bookId: number) {
+export default async function getReview(bookId: string) {
   const reviews = await prismaWithCaching.review.findMany({
     include: {
       user: true,
