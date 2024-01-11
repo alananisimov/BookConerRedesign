@@ -80,7 +80,7 @@ model Review {
   content   String
   rating    Int
   bookId    String
-  book      Book   @relation(fields: [bookId], references: [id])
+  book      Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
   userEmail String
   user      User   @relation(fields: [userEmail], references: [email])
 }
