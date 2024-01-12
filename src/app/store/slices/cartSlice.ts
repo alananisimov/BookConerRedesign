@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Book from "../models";
+import Book from "../../models";
 
 export interface CartItem {
   quantity: number;

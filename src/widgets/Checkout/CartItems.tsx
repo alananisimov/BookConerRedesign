@@ -8,7 +8,7 @@ import { RootState } from "@/app/store/rootReducer";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Button } from "src/shared/ui/shadcn/components/ui/button";
 import store from "@/app/store/store";
-import { removeItem } from "@/app/store/cartSlice";
+import { removeItem } from "@/app/store/slices/cartSlice";
 
 export function CartItemsWrapper() {
   return (
@@ -31,7 +31,7 @@ export default function CartItems() {
           const currentBook = currentCartItem.book;
           return (
             <div
-              className=" space-y-3 rounded-lg border bg-white px-4 py-4 sm:px-6"
+              className="relative space-y-3 rounded-lg border bg-white px-4 py-4 sm:px-6"
               key={product_key}
             >
               <div
@@ -46,9 +46,17 @@ export default function CartItems() {
                   height={184}
                 />
                 <div className="flex-col flex flex-1 overflow-hidden">
-                  <span className=" line-clamp-3">{currentBook.title}</span>
+                  <span className=" line-clamp-3 font-semibold">
+                    {currentBook.title}
+                  </span>
 
-                  <p className="text-lg">{currentBook.price} РУБ</p>
+                  <p className="text-lg">
+                    {" "}
+                    {currentBook.price * currentCartItem.quantity} руб
+                  </p>
+                  <p className="text-lg absolute top-4 right-4 font-medium bg-white px-2">
+                    x{currentCartItem.quantity}
+                  </p>
                   <Button
                     className="mt-auto ml-auto w-fit"
                     onClick={() => {
@@ -74,7 +82,7 @@ export default function CartItems() {
               src="https://i.ibb.co/mCTDNvJ/empty-4731755.png"
               alt="No cart items"
               height={96}
-              onLoadingComplete={() => setLoaded(true)}
+              onLoad={() => setLoaded(true)}
               width={96}
             />
           </Skeleton>

@@ -5,33 +5,23 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import useMediaQuery from "src/app/lib/hooks/use-media-query";
 import { Drawer } from "vaul";
 import { cn } from "src/app/lib/utils";
-import store, { persistor } from "src/app/store/store";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { RootState } from "src/app/store/rootReducer";
+import store from "src/app/store/store";
 import TestSheetContent from "./CartSheetContent";
 import { ScrollArea } from "src/shared/ui/shadcn/components/ui/scroll-area";
 import { LoadingDots } from "../../shared/icons";
 import { useRouter } from "next/navigation";
+import CartSheetContent from "./CartSheetContent";
 interface props {
   open: boolean;
-  setOpen: (arg: boolean) => { payload: boolean; type: "filters/openCart" };
+  setOpen: (arg: boolean) => void;
   className: string | null;
 }
-export function CartSheetWrapper({ open, setOpen, className }: props) {
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <CartSheet open={open} setOpen={setOpen} className={className} />
-      </PersistGate>
-    </Provider>
-  );
-}
+
 export default function CartSheet({ open, setOpen, className }: props) {
   const { isMobile } = useMediaQuery();
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItems = store.getState().cart.items;
   const totalAmount = Object.keys(cartItems).reduce(
     (accumulator, product_key) => {
       const currentCartItem = cartItems[product_key];
@@ -72,7 +62,7 @@ export default function CartSheet({ open, setOpen, className }: props) {
                 <div className="text-lg font-semibold">Моя корзина</div>
                 <div className="mt-2">
                   <div className="grid grid-cols-1">
-                    <TestSheetContent cartItems={cartItems} />
+                    {/* <CartSheetContent cartItems={cartItems} /> */}
                   </div>
                   <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400 w-full left-0">
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
@@ -88,16 +78,15 @@ export default function CartSheet({ open, setOpen, className }: props) {
                     </div>
                   </div>
                   <div className=" w-full">
-                    <button
-                      onClick={handleCheckout}
-                      className={checkout_btn_cn}
-                    >
-                      {isLoading ? (
-                        <LoadingDots color="#FFF" />
-                      ) : (
-                        "Продолжить оформление"
-                      )}
-                    </button>
+                    <span className={checkout_btn_cn}>
+                      <button onClick={handleCheckout}>
+                        {isLoading ? (
+                          <LoadingDots color="#FFF" />
+                        ) : (
+                          "Продолжить оформление"
+                        )}
+                      </button>
+                    </span>
                   </div>
                 </div>
               </ScrollArea>
@@ -183,7 +172,7 @@ export default function CartSheet({ open, setOpen, className }: props) {
                       <div className="absolute bottom-0 w-full right-0 px-6">
                         <button
                           onClick={
-                            isLoading == false ? handleCheckout : () => {}
+                            isLoading === false ? handleCheckout : () => {}
                           }
                           className={checkout_btn_cn}
                         >

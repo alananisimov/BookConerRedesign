@@ -6,7 +6,7 @@ import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "src/shared/ui/shadcn/components/ui/button";
-import ReviewModalContent from "./ReviewModalContent";
+import ReviewModalContent from "../../features/Reviews/CreateReviewModal";
 import { toast } from "sonner";
 import { refreshUserReviews } from "src/features/actions/reviews/refreshUserReviews";
 import deleteReview from "src/features/actions/reviews/deleteReview.server";
@@ -98,10 +98,10 @@ export default function ReviewBlock({
             <h1 className="text-2xl font-medium" id="reviews_block">
               Пока что отзывов нет 😔
             </h1>
-            <p>Мы надеемся что вы станете первым покупетелем данной книги!</p>
+            <p>Мы надеемся что вы оставите первый отзыв на данную книги!</p>
             {canAddReview && (
               <motion.div className="item" variants={item_style}>
-                <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent h-full mt-4 max-w-lg">
+                <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent h-full mt-4 max-w-lg w-fit">
                   <div className="text-sm max-h-24 w-full break-words">
                     Добавь свой отзыв на эту книгу!
                   </div>
@@ -192,7 +192,7 @@ export default function ReviewBlock({
                               </div>
                             </div>{" "}
                             {item.rating +
-                              (item.rating == 1
+                              (item.rating === 1
                                 ? " балл"
                                 : item.rating < 4
                                   ? " балла"
@@ -209,16 +209,14 @@ export default function ReviewBlock({
                 ))}
                 {canAddReview && (
                   <motion.div className="item" variants={item_style}>
-                    <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent h-full">
+                    <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent h-full mt-4 max-w-lg w-fit">
                       <div className="text-sm max-h-24 w-full break-words">
                         Добавь свой отзыв на эту книгу!
                       </div>
                       <Button
                         variant={"outline"}
                         className="my-auto"
-                        onClick={() => {
-                          setAddReviewOpen(true);
-                        }}
+                        onClick={() => setAddReviewOpen(true)}
                       >
                         Добавить
                       </Button>

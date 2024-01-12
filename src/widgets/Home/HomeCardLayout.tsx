@@ -35,7 +35,7 @@ export default function HomeCardLayout({ feed }: args) {
   const [isAdmin, setAdmin] = useState(false);
   async function getRole() {
     const currentRole = await getUserRole();
-    setAdmin(currentRole == "Admin" ? true : false);
+    setAdmin(currentRole === "Admin" ? true : false);
   }
   async function updateFeed() {
     const newFeed = await getBooksFeed();

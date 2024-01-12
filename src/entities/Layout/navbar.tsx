@@ -6,11 +6,7 @@ import useScroll from "src/app/lib/hooks/use-scroll";
 import { useSignInModal } from "./sign-in-modal";
 import UserDropdown from "./user-dropdown";
 import { Session } from "next-auth";
-import { ShoppingCart } from "lucide-react";
-import { Button } from "src/shared/ui/shadcn/components/ui/button";
-import TestSheet, { CartSheetWrapper } from "../Cart/CartSheet";
-import { useEffect, useState } from "react";
-import CartButtonWrapper from "../Cart/CartButtonWrapper";
+import CartButton from "../Cart/OpenCartButton";
 
 export default function NavBar({ session }: { session: Session | null }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
@@ -40,7 +36,7 @@ export default function NavBar({ session }: { session: Session | null }) {
             <p>Книжный уголок</p>
           </Link>
           <div className="inline-flex ml-auto space-x-3">
-            <CartButtonWrapper />
+            <CartButton />
             <div className="">
               {session ? (
                 <UserDropdown session={session} />

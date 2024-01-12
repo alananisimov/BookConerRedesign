@@ -51,11 +51,11 @@ export default function ReviewModalContent({
     setIsSubmitting(true);
     setTimeout(() => setIsSubmitting(false), 3000);
     event.preventDefault();
-    if (rating == 0) {
+    if (rating === 0) {
       toast("Пожалуйста укажите оценку товара");
       return;
     }
-    if (text == "") {
+    if (text === "") {
       toast("Пожалуйста укажите текст отзыва на товар");
       return;
     }

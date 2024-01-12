@@ -1,12 +1,13 @@
-import { CartItem, addItem, removeItem } from "src/app/store/cartSlice";
+import { CartItem, addItem, removeItem } from "@/app/store/slices/cartSlice";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { PieChart } from "lucide-react";
+import store from "@/app/store/store";
 interface args {
   cartItems: Record<string, CartItem>;
 }
-export default function TestSheetContent({ cartItems }: args) {
+export default function CartSheetContent({ cartItems }: args) {
   const dispatch = useDispatch();
   return (
     <>

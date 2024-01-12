@@ -4,14 +4,14 @@ import Book, { ReviewResponse } from "src/app/models";
 import Image from "next/image";
 import { useDispatch, Provider } from "react-redux";
 import store, { persistor } from "src/app/store/store";
-import { addItem } from "src/app/store/cartSlice";
+import { addItem } from "@/app/store/slices/cartSlice";
 import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "sonner";
 import ReviewBlock from "../Reviews/ReviewBlock";
 import getReview from "src/features/actions/reviews/getReviews.server";
 import Breadcrumbs from "../../widgets/Product/BreadCrumbs";
 import ProductInfo from "../../widgets/Product/ProductInfo";
-import { openCart } from "src/app/store/cartStateSlice";
+import { openCart } from "@/app/store/slices/cartStateSlice";
 import { Review } from "@prisma/client";
 
 interface props {
@@ -140,7 +140,7 @@ export default function BookView({
               />
             </div>
           </div>
-          <div className=" lg:max-w-6xl mx-auto w-full">
+          <div className=" lg:max-w-6xl mx-auto w-full mt-10">
             <ReviewBlock
               user_reviews={userReviewsData}
               reviews={reviews_data}

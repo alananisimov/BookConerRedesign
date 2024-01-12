@@ -16,14 +16,14 @@ import {
   FormLabel,
   FormMessage,
 } from "src/shared/ui/shadcn/components/ui/form";
-
 import { Checkbox } from "src/shared/ui/shadcn/components/ui/checkbox";
 import { toast } from "sonner";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "src/app/store/store";
 import { RootState } from "src/app/store/rootReducer";
-import { updateFilters } from "src/app/store/filterSlice";
-export default function ModalOpen() {
+import { updateFilters } from "@/app/store/slices/filterSlice";
+import { items } from "@/app/data/sampleFilterData";
+export default function FilterModal() {
   const [isOpen, setOpen] = useState(Boolean);
   return (
     <>
@@ -41,38 +41,12 @@ export default function ModalOpen() {
       <Provider store={store}>
         <Modal showModal={isOpen} setShowModal={setOpen} className="p-8 z-50">
           <h2 className="text-xl mb-5">Фильтры</h2>
-          <CheckboxReactHookFormMultiple setOpen={setOpen} />
+          <FilterModalContent setOpen={setOpen} />
         </Modal>
       </Provider>
     </>
   );
 }
-const items = [
-  {
-    id: "romantic",
-    label: "Романтика",
-  },
-  {
-    id: "fantasy",
-    label: "Фэнтези",
-  },
-  {
-    id: "true-crime",
-    label: "Детектив (True Crime)",
-  },
-  {
-    id: "science-fiction",
-    label: "Научная фантастика",
-  },
-  {
-    id: "dystopie",
-    label: "Антиутопия",
-  },
-  {
-    id: "thriller",
-    label: "Триллер",
-  },
-];
 
 const FormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -82,7 +56,7 @@ const FormSchema = z.object({
 interface args {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
-export function CheckboxReactHookFormMultiple({ setOpen }: args) {
+export function FilterModalContent({ setOpen }: args) {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filter.items);
   const form = useForm<z.infer<typeof FormSchema>>({

@@ -1,9 +1,9 @@
 // rootReducer.ts
 import { combineReducers } from "redux";
-import cartReducer from "./cartSlice";
-import filterSlice from "./filterSlice";
-import uiSlice from "./uiSlice";
-import cartStateSlice from "./cartStateSlice";
+import cartReducer from "./slices/cartSlice";
+import filterSlice from "./slices/filterSlice";
+import uiSlice from "./slices/uiSlice";
+import cartStateSlice from "./slices/cartStateSlice";
 const rootReducer = combineReducers({
   cart: cartReducer,
   filter: filterSlice,

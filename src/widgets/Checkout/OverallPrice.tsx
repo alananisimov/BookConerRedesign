@@ -13,8 +13,6 @@ export default function OverallPrice() {
 
 function OverallPriceContent() {
   const cartItems = useSelector((state: RootState) => state.cart.items);
-
-  const dispatch = useDispatch();
   const totalAmount = Object.keys(cartItems).reduce(
     (accumulator, product_key) => {
       const currentCartItem = cartItems[product_key];

@@ -3,20 +3,19 @@ import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Button } from "src/shared/ui/shadcn/components/ui/button";
-import { CartSheetWrapper } from "./CartSheet";
 import { RootState } from "src/app/store/rootReducer";
-import { openCart } from "src/app/store/cartStateSlice";
+import CartSheet from "./CartSheet";
+import { openCart } from "@/app/store/slices/cartStateSlice";
 
-export default function CartButtonWrapper() {
+export default function CartButton() {
   return (
     <Provider store={store}>
-      <CartButton />
+      <CartButtonContent />
     </Provider>
   );
 }
 
-export function CartButton() {
-  const [open, setOpen] = useState(false);
+function CartButtonContent() {
   const [isClient, setIsClient] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const cartSheetWrapperOpen = useSelector(
@@ -28,7 +27,7 @@ export function CartButton() {
   }, []);
   return (
     <>
-      <CartSheetWrapper
+      <CartSheet
         open={cartSheetWrapperOpen}
         setOpen={(arg: boolean) => dispatch(openCart(arg))}
         className={""}

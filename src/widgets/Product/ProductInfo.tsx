@@ -48,7 +48,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           className="ml-3 text-sm font-medium text-blue-600 hover:text-blue-500"
         >
           {reviews.totalCount}{" "}
-          {reviews.totalCount == 1
+          {reviews.totalCount === 1
             ? "отзыв"
             : reviews.totalCount >= 5
               ? "отзывов"
