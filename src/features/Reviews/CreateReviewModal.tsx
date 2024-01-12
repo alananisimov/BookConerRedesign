@@ -97,7 +97,7 @@ export default function ReviewModalContent({
     <>
       <Modal showModal={addReviewOpen} setShowModal={setAddReviewOpen}>
         <form onSubmit={submitReview}>
-          <div className="grid gap-4 p-4">
+          <div className="grid gap-4 p-6">
             <DialogTitle>Добавить отзыв</DialogTitle>
             <DialogDescription>
               Нажмите сохранить отзыв, когда будете готовы

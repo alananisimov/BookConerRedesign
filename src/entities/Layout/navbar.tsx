@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import useScroll from "src/app/lib/hooks/use-scroll";
-import { useSignInModal } from "./sign-in-modal";
-import UserDropdown from "./user-dropdown";
+import { useSignInModal } from "./SignInModal";
+import UserDropdown from "./UserDropdown";
 import { Session } from "next-auth";
 import CartButton from "../Cart/OpenCartButton";
 

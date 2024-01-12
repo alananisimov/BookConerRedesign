@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Книжный уголок - Самый уютный магазин книг",
   description:
     "Книги - это эмоции, новые ощущения, знания и конечно же удовольствие",
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL("https://bookconer.site"),
   icons: "/book.jpg",
 };
 export const viewport: Viewport = {
@@ -27,7 +27,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cx(sfPro.variable, inter.variable)}>
-        {/* <div className="fixed h-screen w-full bg-gradient-to-br from-blue-50 via-white to-sky-100" /> */}
+        <div className="fixed h-screen w-full bg-gradient-to-br from-blue-50 via-white to-sky-100" />
         <Toaster />
 
         <Nav />

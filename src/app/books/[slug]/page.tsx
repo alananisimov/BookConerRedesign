@@ -7,7 +7,10 @@ export default async function BookPreview({
 }: {
   params: { slug: string };
 }) {
+  console.log(params.slug);
+
   const { user_reviews, buyed_books } = await refreshUserReviews();
+
   const selectedBook = await getBookById({ bookName: params.slug });
   return (
     <>

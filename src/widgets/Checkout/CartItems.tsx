@@ -10,15 +10,15 @@ import { Button } from "src/shared/ui/shadcn/components/ui/button";
 import store from "@/app/store/store";
 import { removeItem } from "@/app/store/slices/cartSlice";
 
-export function CartItemsWrapper() {
+export default function CartItems() {
   return (
     <Provider store={store}>
-      <CartItems />
+      <CartItemsContent />
     </Provider>
   );
 }
 
-export default function CartItems() {
+export function CartItemsContent() {
   const [imageLoaded, setLoaded] = useState(Boolean);
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -66,6 +66,7 @@ export default function CartItems() {
                         dispatch(removeItem(product_key));
                       });
                     }}
+                    variant={"outline"}
                   >
                     Удалить
                   </Button>

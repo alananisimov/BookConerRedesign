@@ -37,7 +37,11 @@ export default function HomeCard({ book, isAdmin, updateFeed }: props) {
 
   return (
     <Link href={`/books/${book.title}`}>
-      <Card className={" hover:scale-105 transition-all overflow-hidden"}>
+      <Card
+        className={
+          " hover:scale-105 transition-all overflow-hidden bg-transparent"
+        }
+      >
         <CardContent className="grid">
           <Image
             src={book.image}
@@ -86,10 +90,10 @@ export default function HomeCard({ book, isAdmin, updateFeed }: props) {
               </div>
               <div className="ml-auto">
                 {isAdmin && (
-                  <Link href={"#"}>
+                  <Link href={""}>
                     <Button
                       variant={"outline"}
-                      className=""
+                      className="bg-transparent"
                       onClick={() => deleteBookReq()}
                     >
                       Удалить

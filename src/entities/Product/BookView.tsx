@@ -104,7 +104,7 @@ export default function BookView({
 
         <div className="flex flex-col">
           <div className="sm:inline-flex w-full justify-center">
-            <div className=" mt-6 max-w-lg sm:px-6 sm:w-1/2 px-4 lg:gap-x-8 lg:px-8">
+            <div className=" mt-6 max-w-sm sm:px-6 sm:w-full px-4 lg:gap-x-8 lg:px-8">
               <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg">
                 <Image
                   src={product_data.images[0].src}
@@ -117,7 +117,7 @@ export default function BookView({
             </div>
 
             <div className=" max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16 sm:w-1/2">
-              <div className="lg:col-span-2  lg:pr-8">
+              <div className="lg:col-span-2  lg:pr-8 mb-2">
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                   {product_data.name}
                 </h1>

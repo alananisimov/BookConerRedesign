@@ -82,7 +82,7 @@ export default function AdminHomeCard({ updateFeed }: args) {
     "thriller",
   ];
   return (
-    <Card className={" overflow-hidden "}>
+    <Card className={" overflow-hidden bg-transparent"}>
       <form onSubmit={submitForm} id="form_id">
         <CardContent className="grid">
           <div className="hover:scale-105 transition-all z-0 max-h-40 mt-6 rounded-lg border border-dashed border-gray-900/25 px-6 py-3">
@@ -94,7 +94,7 @@ export default function AdminHomeCard({ updateFeed }: args) {
               <div className=" mt-2 flex flex-col text-sm leading-6 text-gray-600 overflow-ellipsis">
                 <label
                   htmlFor="file-upload"
-                  className=" relative cursor-pointer rounded-md bg-white font-semibold text-cyan-700  "
+                  className=" relative cursor-pointer rounded-md font-semibold text-cyan-700  "
                 >
                   <span className="line-clamp-1">Загрузите картинку</span>
                   <input
@@ -119,7 +119,7 @@ export default function AdminHomeCard({ updateFeed }: args) {
             </div>
           </div>
 
-          <div className="mt-3">
+          <div className="mt-4">
             <div className="flex flex-col xl:flex-row gap-3 ">
               <Badge
                 className="text-xs font-semibold px-2.5 py-0.5 w-full max-w-32"
@@ -154,13 +154,13 @@ export default function AdminHomeCard({ updateFeed }: args) {
                 </select>
               </Badge>
             </div>
-            <div className="my-2 font-semibold leading-tight text-ellipsis text-wrap line-clamp-1 break-words">
+            <div className="my-3 font-semibold leading-tight line-clamp-1 break-words">
               <input
                 required
                 placeholder="Название"
                 name="name"
                 onChange={handleInputChange}
-                className="focus:border-border focus:ring-0 focus:outline-none"
+                className="focus:border-border focus:ring-0 focus:outline-none bg-transparent"
               />
             </div>
 
@@ -171,7 +171,7 @@ export default function AdminHomeCard({ updateFeed }: args) {
                 required
                 onChange={handleInputChange}
                 type="number"
-                className="focus:border-border focus:ring-0 focus:outline-none"
+                className="focus:border-border focus:ring-0 focus:outline-none bg-transparent"
               />
               <div className="text-gray-600 text-sm mt-2"></div>
             </div>
@@ -181,7 +181,7 @@ export default function AdminHomeCard({ updateFeed }: args) {
                 placeholder="Описание"
                 name="description"
                 onChange={handleInputChange}
-                className="p-0 text-xs w-full placeholder:text-sm focus:border-border focus:ring-0 focus:outline-none"
+                className="p-0 text-xs w-full placeholder:text-sm focus:border-border focus:ring-0 focus:outline-none bg-transparent"
               />
             </div>
             <div>

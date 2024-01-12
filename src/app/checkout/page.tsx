@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import router from "next/navigation";
-import CartItems, { CartItemsWrapper } from "src/widgets/Checkout/CartItems";
+import CartItems from "src/widgets/Checkout/CartItems";
 import Link from "next/link";
 import OverallPrice from "src/widgets/Checkout/OverallPrice";
 
@@ -94,7 +94,7 @@ export default async function Checkout() {
             Проверьте ваши покупки и оставьте реквизиты для оплаты
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-y-4 mt-8 gap-x-4">
-            <CartItemsWrapper />
+            <CartItems />
           </div>
         </div>
         <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
