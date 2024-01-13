@@ -66,11 +66,9 @@ export default function AdminHomeCard({ updateFeed }: args) {
       category: formValuesRef.current.category,
       genre: formValuesRef.current.genre,
     });
-
-    console.log(res);
     if (res) {
       updateFeed();
-      toast("Вы добавили книгу");
+      toast("Книга была успешно добавлена");
     }
   }
   const genres = [

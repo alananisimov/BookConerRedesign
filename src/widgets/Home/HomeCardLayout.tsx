@@ -11,13 +11,6 @@ import getBooksFeed from "src/features/actions/books/getBooksFeed.server";
 interface args {
   feed: book_plus_reviews;
 }
-const container = {
-  hidden: { opacity: 1, scale: 0 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-  },
-};
 export function HomeCardLayoutWrapper({ feed }: args) {
   return (
     <Provider store={store}>
@@ -39,7 +32,6 @@ export default function HomeCardLayout({ feed }: args) {
   }
   async function updateFeed() {
     const newFeed = await getBooksFeed();
-    console.log(newFeed);
     setUpdatedFeed(newFeed);
   }
   useEffect(() => {
