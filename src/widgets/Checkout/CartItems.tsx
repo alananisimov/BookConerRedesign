@@ -18,7 +18,7 @@ export default function CartItems() {
   );
 }
 
-export function CartItemsContent() {
+function CartItemsContent() {
   const [imageLoaded, setLoaded] = useState(Boolean);
   const cartItems = useSelector((state: RootState) => state.cart.items);
 

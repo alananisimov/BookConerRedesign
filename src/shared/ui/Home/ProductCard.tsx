@@ -1,6 +1,12 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import {
+  ComponentPropsWithoutRef,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Card, CardContent } from "src/shared/ui/shadcn/components/ui/card";
 import Image from "next/image";
 import { Star } from "lucide-react";
@@ -13,16 +19,16 @@ import deleteBook from "src/features/actions/books/deleteBook.server";
 import { toast } from "sonner";
 import { del } from "@vercel/blob";
 import { truncate } from "src/app/lib/utils";
-interface props {
+type props = {
   book: book_plus_reviews[0];
   isAdmin: boolean;
   updateFeed: () => Promise<void>;
-}
+  props?: ComponentPropsWithoutRef<"div">;
+};
 
-export default function HomeCard({ book, isAdmin, updateFeed }: props) {
+export default function HomeCard({ book, isAdmin, updateFeed, props }: props) {
   async function deleteBookReq() {
     const req = await deleteBook(book.id);
-    console.log(req);
     if (req) {
       updateFeed();
       await del(req.image, {
@@ -37,11 +43,7 @@ export default function HomeCard({ book, isAdmin, updateFeed }: props) {
 
   return (
     <Link href={`/books/${book.title}`}>
-      <Card
-        className={
-          " hover:scale-105 transition-all overflow-hidden bg-transparent"
-        }
-      >
+      <Card className={"overflow-hidden bg-transparent group"} {...props}>
         <CardContent className="grid">
           <Image
             src={book.image}
@@ -51,7 +53,7 @@ export default function HomeCard({ book, isAdmin, updateFeed }: props) {
             sizes="132px"
             width={200}
             height={200}
-            className=" z-0 h-56 w-auto object-cover rounded-md mt-2"
+            className=" z-0 h-56 w-auto object-cover rounded-md mt-2 group-hover:scale-105 transition-all "
           />
 
           <div className="mt-3">

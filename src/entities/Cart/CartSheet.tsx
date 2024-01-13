@@ -6,12 +6,11 @@ import useMediaQuery from "src/app/lib/hooks/use-media-query";
 import { Drawer } from "vaul";
 import { cn } from "src/app/lib/utils";
 import store from "src/app/store/store";
-import TestSheetContent from "./CartSheetContent";
+import CartSheetContent from "./CartSheetContent";
 import { ScrollArea } from "src/shared/ui/shadcn/components/ui/scroll-area";
 import { LoadingDots } from "../../shared/icons";
 import { useRouter } from "next/navigation";
-import CartSheetContent from "./CartSheetContent";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useSignInModal } from "../Layout/SignInModal";
 interface props {
@@ -171,7 +170,7 @@ export default function CartSheet({ open, setOpen, className }: props) {
                       </div>
                       <div className="relative mt-6 flex-1 px-4 sm:px-6">
                         <div className="grid grid-cols-1 gap-y-2">
-                          <TestSheetContent cartItems={cartItems} />
+                          <CartSheetContent cartItems={cartItems} />
                         </div>
                         <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400 absolute bottom-10 w-full left-0 px-6">
                           <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">

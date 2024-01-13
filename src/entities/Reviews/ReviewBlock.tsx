@@ -101,7 +101,7 @@ export default function ReviewBlock({
             <p>Мы надеемся что вы оставите первый отзыв на данную книги!</p>
             {canAddReview && (
               <motion.div className="item" variants={item_style}>
-                <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent h-full mt-4 max-w-lg w-fit">
+                <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent h-full max-w-lg w-fit">
                   <div className="text-sm max-h-24 w-full break-words">
                     Добавь свой отзыв на эту книгу!
                   </div>
@@ -120,16 +120,16 @@ export default function ReviewBlock({
           <div className=" h-full w-full" id="reviews_block">
             <h1 className="m-4 font-medium text-xl">Все отзывы</h1>
             <motion.div
-              className=" "
+              className="h-full "
               variants={container}
               initial="hidden"
               animate="visible"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-3 p-4 md:gap-3 md:p-5 pt-0 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-3 p-4 md:gap-3 md:p-5 pt-0 w-full h-full">
                 {reviews.reviews.map((item) => (
                   <motion.div
                     key={item.id}
-                    className="item"
+                    className="item "
                     variants={item_style}
                   >
                     <div
@@ -201,7 +201,7 @@ export default function ReviewBlock({
                         </div>
                       </div>
 
-                      <div className="text-xs text-muted-foreground max-h-24 w-full break-words">
+                      <div className="text-xs text-muted-foreground w-full break-words">
                         {item.content}
                       </div>
                     </div>
@@ -209,17 +209,19 @@ export default function ReviewBlock({
                 ))}
                 {canAddReview && (
                   <motion.div className="item" variants={item_style}>
-                    <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent h-full mt-4 max-w-lg w-fit">
-                      <div className="text-sm max-h-24 w-full break-words">
-                        Добавь свой отзыв на эту книгу!
+                    <div className="flex rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent w-full md:w-fit h-fit">
+                      <div className="flex flex-col items-start gap-y-3 my-auto">
+                        <div className="text-sm max-h-24 w-full break-words">
+                          Добавь свой отзыв на эту книгу!
+                        </div>
+                        <Button
+                          variant={"outline"}
+                          className="bg-transparent"
+                          onClick={() => setAddReviewOpen(true)}
+                        >
+                          Добавить
+                        </Button>
                       </div>
-                      <Button
-                        variant={"outline"}
-                        className="my-auto"
-                        onClick={() => setAddReviewOpen(true)}
-                      >
-                        Добавить
-                      </Button>
                     </div>
                   </motion.div>
                 )}

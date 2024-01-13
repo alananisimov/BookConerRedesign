@@ -20,12 +20,16 @@ interface props {
   user_reviews: Review[] | undefined;
 }
 
-export function BookViewWrapper({ product, buyed_books, user_reviews }: props) {
+export default function BookView({
+  product,
+  buyed_books,
+  user_reviews,
+}: props) {
   return (
     <Provider store={store}>
       <Toaster />
       <PersistGate persistor={persistor}>
-        <BookView
+        <BookViewContent
           product={product}
           buyed_books={buyed_books}
           user_reviews={user_reviews}
@@ -35,11 +39,7 @@ export function BookViewWrapper({ product, buyed_books, user_reviews }: props) {
   );
 }
 
-export default function BookView({
-  product,
-  buyed_books,
-  user_reviews,
-}: props) {
+function BookViewContent({ product, buyed_books, user_reviews }: props) {
   const [reviews_data, setReviewsData] = useState<ReviewResponse>({
     reviews: [],
     totalCount: 0,
@@ -53,7 +53,6 @@ export default function BookView({
 
   async function refreshReviewsData() {
     const data = await getReview(product.id);
-    console.log(data);
     setReviewsData(data);
   }
 
@@ -102,7 +101,7 @@ export default function BookView({
           productId={product.title}
         />
 
-        <div className="flex flex-col">
+        <div className="flex flex-col h-full">
           <div className="sm:inline-flex w-full justify-center">
             <div className=" mt-6 max-w-sm sm:px-6 sm:w-full px-4 lg:gap-x-8 lg:px-8">
               <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg">
@@ -140,7 +139,7 @@ export default function BookView({
               />
             </div>
           </div>
-          <div className=" lg:max-w-6xl mx-auto w-full mt-10">
+          <div className=" lg:max-w-6xl h-full mx-auto w-full mt-10">
             <ReviewBlock
               user_reviews={userReviewsData}
               reviews={reviews_data}

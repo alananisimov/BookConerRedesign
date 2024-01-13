@@ -23,6 +23,14 @@ import store from "src/app/store/store";
 import { RootState } from "src/app/store/rootReducer";
 import { updateFilters } from "@/app/store/slices/filterSlice";
 import { items } from "@/app/data/sampleFilterData";
+const FormSchema = z.object({
+  items: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "Вы должны выбрать хотя бы один жанр",
+  }),
+});
+interface args {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
 export default function FilterModal() {
   const [isOpen, setOpen] = useState(Boolean);
   return (
@@ -48,15 +56,7 @@ export default function FilterModal() {
   );
 }
 
-const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "Вы должны выбрать хотя бы один жанр",
-  }),
-});
-interface args {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}
-export function FilterModalContent({ setOpen }: args) {
+function FilterModalContent({ setOpen }: args) {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filter.items);
   const form = useForm<z.infer<typeof FormSchema>>({

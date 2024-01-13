@@ -11,14 +11,14 @@ import getBooksFeed from "src/features/actions/books/getBooksFeed.server";
 interface args {
   feed: book_plus_reviews;
 }
-export function HomeCardLayoutWrapper({ feed }: args) {
+export default function HomeCardLayout({ feed }: args) {
   return (
     <Provider store={store}>
-      <HomeCardLayout feed={feed} />
+      <HomeCardLayoutContent feed={feed} />
     </Provider>
   );
 }
-export default function HomeCardLayout({ feed }: args) {
+function HomeCardLayoutContent({ feed }: args) {
   const [updatedFeed, setUpdatedFeed] = useState(feed);
   const filters = useSelector((state: RootState) => state.filter.items);
   const filteredBooks: book_plus_reviews = updatedFeed.filter((book) =>

@@ -1,7 +1,7 @@
 import React from "react";
-import ModalOpen from "src/shared/ui/Home/ModalButton";
-import { HomeCardLayoutWrapper } from "src/widgets/Home/HomeCardLayout";
+import ModalOpen from "src/shared/ui/Home/FilterButton";
 import getBooksFeed from "../../features/actions/books/getBooksFeed.server";
+import HomeCardLayout from "src/widgets/Home/HomeCardLayout";
 
 export default async function Home() {
   const updatedFeed = await getBooksFeed();
@@ -12,7 +12,7 @@ export default async function Home() {
         <ModalOpen />
       </div>
       <main className="text-black">
-        <HomeCardLayoutWrapper feed={updatedFeed} />
+        <HomeCardLayout feed={updatedFeed} />
       </main>
     </div>
   );

@@ -59,7 +59,6 @@ export default function ReviewModalContent({
       toast("Пожалуйста укажите текст отзыва на товар");
       return;
     }
-    console.log("Review submitted with rating:", rating, "and text:", text);
     const currentSession = await getSession();
 
     if (
@@ -127,7 +126,7 @@ export default function ReviewModalContent({
                 id="review"
                 className="w-full p-2"
                 value={text}
-                maxLength={250}
+                maxLength={500}
                 onChange={handleTextChange}
               />
             </div>
