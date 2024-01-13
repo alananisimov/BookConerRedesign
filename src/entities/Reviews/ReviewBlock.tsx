@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Book, { ReviewResponse } from "src/app/models";
 import { cn } from "src/app/lib/utils";
 import { Review } from "@prisma/client";
@@ -62,6 +63,7 @@ export default function ReviewBlock({
   const canDeleteReview = (reviewId: number) => {
     return user_reviews?.some((userReview) => userReview.id === reviewId);
   };
+
   async function deleteReviewReq(reviewId: number) {
     try {
       await deleteReview(reviewId);
@@ -80,7 +82,6 @@ export default function ReviewBlock({
   }
   useEffect(() => {
     refreshReviews();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
@@ -101,7 +102,7 @@ export default function ReviewBlock({
             <p>Мы надеемся что вы оставите первый отзыв на данную книги!</p>
             {canAddReview && (
               <motion.div className="item" variants={item_style}>
-                <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent h-full max-w-lg w-fit">
+                <div className="flex flex-col items-start gap-y-3 rounded-lg border p-3.5 text-left text-sm transition-all hover:bg-accent h-full max-w-lg w-fit mt-4">
                   <div className="text-sm max-h-24 w-full break-words">
                     Добавь свой отзыв на эту книгу!
                   </div>
