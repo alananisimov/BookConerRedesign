@@ -187,6 +187,7 @@ export default function CartSheet({ open, setOpen, className }: props) {
                         </div>
                         <div className="absolute bottom-0 w-full right-0 px-6">
                           <button
+                            disabled={Object.keys(cartItems).length === 0}
                             onClick={
                               isLoading === false ? handleCheckout : () => {}
                             }

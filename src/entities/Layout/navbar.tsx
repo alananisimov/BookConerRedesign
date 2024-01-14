@@ -33,7 +33,7 @@ export default function NavBar({ session }: { session: Session | null }) {
               height="35"
               className="mr-2 rounded-full"
             ></Image>
-            <p>Книжный уголок</p>
+            <p className=" truncate">Книжный уголок</p>
           </Link>
           <div className="inline-flex ml-auto space-x-3">
             <CartButton />
