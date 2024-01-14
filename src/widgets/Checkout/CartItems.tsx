@@ -31,45 +31,29 @@ function CartItemsContent() {
           const currentBook = currentCartItem.book;
           return (
             <div
-              className="relative space-y-3 rounded-lg border bg-white px-4 py-4 sm:px-6"
+              className="relative space-y-3 h-32 border-b py-4"
               key={product_key}
             >
               <div
-                className="flex flex-row rounded-lg bg-white gap-5"
+                className="flex flex-row rounded-lg gap-5 h-full"
                 key={currentBook.id}
               >
                 <Image
-                  className=" h-full p-2 w-auto max-h-32 rounded-md border object-cover object-center"
+                  className=" h-full w-auto object-cover object-center"
                   src={currentBook.image}
                   alt=""
                   width={146}
                   height={184}
                 />
-                <div className="flex-col flex flex-1 overflow-hidden">
-                  <span className=" line-clamp-3 font-semibold">
-                    {currentBook.title}
-                  </span>
+                <div className="flex-col flex flex-1 overflow-hidden lg:text-lg">
+                  <span className=" line-clamp-3">{currentBook.title}</span>
 
-                  <p className="text-lg">
-                    {" "}
-                    {currentBook.price * currentCartItem.quantity} руб
+                  <p className=" mt-auto font-light text-sm lg:text-base">
+                    {currentCartItem.quantity} x {currentBook.price} руб
                   </p>
-                  <p className="text-lg absolute top-4 right-4 font-medium bg-white px-2">
+                  {/* <p className="text-lg absolute top-4 right-4 font-medium bg-white px-2">
                     x{currentCartItem.quantity}
-                  </p>
-                  <Button
-                    className="mt-auto ml-auto w-fit"
-                    onClick={() => {
-                      Array.from({
-                        length: currentCartItem.quantity,
-                      }).forEach(() => {
-                        dispatch(removeItem(product_key));
-                      });
-                    }}
-                    variant={"outline"}
-                  >
-                    Удалить
-                  </Button>
+                  </p> */}
                 </div>
               </div>
             </div>

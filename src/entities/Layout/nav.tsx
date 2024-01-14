@@ -1,5 +1,5 @@
 import { authOptions } from "src/app/lib/configuration";
-import Navbar from "./navbar";
+import Navbar from "./Navbar";
 import { getServerSession } from "next-auth/next";
 
 export default async function Nav() {

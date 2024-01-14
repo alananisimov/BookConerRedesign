@@ -1,4 +1,3 @@
-// Import necessary modules
 "use server";
 import prisma, { prismaWithCaching } from "../../../app/lib/prisma";
 import { ReviewResponse } from "src/app/models";

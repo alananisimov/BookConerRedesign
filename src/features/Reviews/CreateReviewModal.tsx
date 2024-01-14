@@ -1,5 +1,5 @@
 import { StarIcon } from "lucide-react";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import Modal from "../../shared/modal";
 import {
   DialogDescription,
@@ -42,20 +42,21 @@ export default function ReviewModalContent({
   refreshReviews,
 }: args) {
   const [rating, setRating] = useState(0);
-  const [text, setText] = useState("");
+  const text = useRef<HTMLTextAreaElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleRatingClick = (selectedRating: number) => {
     setRating(selectedRating);
   };
   const submitReview = async (event: FormEvent) => {
+    event.preventDefault();
     setIsSubmitting(true);
     setTimeout(() => setIsSubmitting(false), 3000);
-    event.preventDefault();
+
     if (rating === 0) {
       toast("Пожалуйста укажите оценку товара");
       return;
     }
-    if (text === "") {
+    if (text.current && text.current.value === "") {
       toast("Пожалуйста укажите текст отзыва на товар");
       return;
     }
@@ -64,10 +65,11 @@ export default function ReviewModalContent({
     if (
       currentSession &&
       currentSession.user &&
-      typeof currentSession.user.email === "string"
+      typeof currentSession.user.email === "string" &&
+      text.current
     ) {
       const response = await createReview({
-        content: text,
+        content: text.current.value,
         rating: rating,
         bookId: product.id,
         userEmail: currentSession.user.email,
@@ -77,6 +79,7 @@ export default function ReviewModalContent({
         setAddReviewOpen(false);
         setCanAddReview(false);
         const refreshed = await refreshUserReviews();
+        console.log(refreshed);
         refreshReviews();
         setUserReviews(refreshed.user_reviews);
         toast("Спасибо за ваш отзыв! ❤️");
@@ -88,10 +91,6 @@ export default function ReviewModalContent({
       }
     }
   };
-
-  function handleTextChange(event: any) {
-    setText(event.target.value);
-  }
   return (
     <>
       <Modal showModal={addReviewOpen} setShowModal={setAddReviewOpen}>
@@ -125,9 +124,8 @@ export default function ReviewModalContent({
                 placeholder="Напишите текст отзыва тут..."
                 id="review"
                 className="w-full p-2"
-                value={text}
                 maxLength={500}
-                onChange={handleTextChange}
+                ref={text}
               />
             </div>
             <Button

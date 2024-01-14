@@ -141,7 +141,8 @@ function BookViewContent({ product, buyed_books, user_reviews }: props) {
           </div>
           <div className=" lg:max-w-6xl h-full mx-auto w-full mt-10">
             <ReviewBlock
-              user_reviews={userReviewsData}
+              setReviews={setReviewsData}
+              userReviews={userReviewsData}
               reviews={reviews_data}
               setUserReviews={setUserReviewsData}
               refreshReviews={refreshReviewsData}

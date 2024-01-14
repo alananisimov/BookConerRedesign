@@ -48,7 +48,8 @@ interface args {
   >;
   setCanAddReview: Dispatch<SetStateAction<boolean>>;
   product: Book;
-  user_reviews: Review[] | undefined;
+  userReviews: Review[] | undefined;
+  setReviews: Dispatch<SetStateAction<ReviewResponse>>;
 }
 export default function ReviewBlock({
   reviews,
@@ -56,22 +57,31 @@ export default function ReviewBlock({
   setCanAddReview,
   product,
   setUserReviews,
+  setReviews,
   refreshReviews,
-  user_reviews,
+  userReviews,
 }: args) {
   const [addReviewOpen, setAddReviewOpen] = useState(Boolean);
   const canDeleteReview = (reviewId: number) => {
-    return user_reviews?.some((userReview) => userReview.id === reviewId);
+    return userReviews?.some((userReview) => userReview.id === reviewId);
   };
 
   async function deleteReviewReq(reviewId: number) {
     try {
       await deleteReview(reviewId);
-      refreshReviews();
+      const { user_reviews } = await refreshUserReviews();
+      console.log(user_reviews);
+      setUserReviews(user_reviews);
+      if (reviews !== undefined) {
+        const updatedReviews = reviews.reviews.filter(
+          (review) => review.id !== reviewId
+        );
 
-      const refreshed = await refreshUserReviews();
-      console.log(refreshed);
-      setUserReviews(refreshed.user_reviews);
+        setReviews({
+          ...reviews,
+          reviews: updatedReviews,
+        });
+      }
       toast("Вы успешно удалили отзыв!");
       setCanAddReview(true);
       setAddReviewOpen(false);
